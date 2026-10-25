@@ -1,0 +1,20 @@
+{
+  "name": "mergeflow-sorter",
+  "version": "1.0.0",
+  "description": "G1 Mini-Project: Merge Sort & Recursion Tree Method - File/Log Sorter Tool",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "test": "node test_suite.js"
+  },
+  "keywords": [
+    "merge-sort",
+    "recursion-tree",
+    "file-sorter",
+    "log-sorter",
+    "algorithms",
+    "data-structures"
+  ],
+  "author": "PixelNinja420",
+  "license": "MIT"
+}

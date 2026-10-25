@@ -1,0 +1,12 @@
+2026-10-21 12:04:18 INFO API server started on port 8080
+2026-10-21 12:04:21 WARN Slow database query: 840 ms
+2026-10-21 12:03:57 ERROR Failed login for user: guest
+2026-10-21 12:04:05 INFO Cache warmed successfully
+2026-10-21 12:02:46 INFO Scheduled backup completed
+2026-10-21 12:04:12 ERROR Payment service timeout after 3000 ms
+2026-10-21 12:03:33 DEBUG Request received: GET /api/movies
+2026-10-21 12:04:24 INFO Health check passed
+2026-10-21 12:01:08 WARN Disk usage reached 82 percent
+2026-10-21 12:03:01 INFO User session created: U1042
+2026-10-21 12:02:10 ERROR Connection refused by upstream host
+2026-10-21 12:04:28 DEBUG Response sent: status 200
