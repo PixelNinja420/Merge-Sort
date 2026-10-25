@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#101210" />
+<title>MergeFlow — File &amp; Log Sorter</title>
+<style>
+  :root {
+    --bg: #080a09;
+    --panel: #121512;
+    --panel-2: #191d19;
+    --panel-3: #222722;
+    --line: rgba(255,255,255,.075);
+    --line-strong: rgba(255,255,255,.13);
+    --text: #f3f6f1;
+    --muted: #a1aaa0;
+    --muted-2: #737c72;
+    --green: #1ed760;
+    --green-soft: rgba(30,215,96,.12);
+    --green-line: rgba(30,215,96,.28);
+    --mint: #9cf6bd;
+    --yellow: #f4d979;
+    --blue: #8bc9ff;
+    --rose: #ff9fbb;
+    --radius: 18px;
+    --shadow: 0 18px 60px rgba(0,0,0,.28);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; line-height: 1.5; }
+  button, input, select, textarea { font: inherit; }
+  button { cursor: pointer; }
+  .app { display: grid; grid-template-columns: 244px minmax(0,1fr); min-height: 100vh; gap: 10px; padding: 10px; }
+  .sidebar { display:flex; flex-direction:column; gap:10px; min-width:0; }
+  .brand-card, .nav-card, .side-bottom { background: var(--panel); border:1px solid var(--line); border-radius: 16px; }
+  .brand-card { display:flex; align-items:center; gap:11px; padding: 18px 16px; }
+  .brand-mark { width:38px; height:38px; display:grid; place-items:center; border-radius:12px; background:var(--green); color:#08130b; box-shadow:0 7px 24px rgba(30,215,96,.16); }
+  .brand-title { font-size:17px; font-weight:850; letter-spacing:-.6px; line-height:1.05; }
+  .brand-sub { display:block; color:var(--muted); font-size:10px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; margin-top:4px; }
+  .nav-card { padding: 10px; }
+  .nav-label { color:var(--muted-2); font-size:10px; text-transform:uppercase; letter-spacing:1.6px; font-weight:800; padding:9px 10px 7px; }
+  .nav-item { display:flex; align-items:center; gap:12px; width:100%; padding:11px 12px; border:0; border-radius:10px; color:var(--muted); text-align:left; background:transparent; font-weight:650; margin:2px 0; transition: .18s ease; }
+  .nav-item svg { opacity:.8; flex-shrink:0; }
+  .nav-item:hover { color:var(--text); background:rgba(255,255,255,.045); }
+  .nav-item.active { color:var(--text); background:var(--green-soft); box-shadow: inset 3px 0 var(--green); }
+  .nav-item.active svg { color:var(--green); opacity:1; }
+  .nav-badge { margin-left:auto; font-size:10px; color:var(--green); background:rgba(30,215,96,.1); border:1px solid rgba(30,215,96,.18); padding:2px 6px; border-radius:6px; }
+  .side-bottom { margin-top:auto; padding:14px; }
+  .side-bottom .mini-title { font-weight:750; font-size:12px; }
+  .side-bottom p { color:var(--muted); font-size:11px; margin:7px 0 12px; }
+  .progress { height:5px; border-radius:8px; background:#2a302a; overflow:hidden; }
+  .progress span { display:block; width:72%; height:100%; border-radius:inherit; background:var(--green); }
+  .side-foot { color:#667066; font-size:10px; padding:10px 13px 0; }
+  .main-shell { min-width:0; border-radius: 18px; background: radial-gradient(ellipse at 80% -5%, rgba(30,215,96,.075), transparent 30%), #0d100e; border:1px solid var(--line); overflow:hidden; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:17px 28px; border-bottom:1px solid var(--line); background:rgba(10,13,10,.72); position:sticky; top:0; z-index:5; backdrop-filter:blur(14px); }
+  .crumbs { display:flex; align-items:center; gap:9px; color:var(--muted); font-size:12px; }
+  .crumbs strong { color:var(--text); font-weight:700; }
+  .top-actions { display:flex; align-items:center; gap:10px; }
+  .status-pill { display:flex; align-items:center; gap:7px; border:1px solid var(--line-strong); padding:7px 10px; border-radius:20px; color:#c7d0c6; font-size:11px; background:rgba(255,255,255,.025); }
+  .dot { display:inline-block; width:7px; height:7px; background:var(--green); border-radius:50%; box-shadow:0 0 0 4px rgba(30,215,96,.09); }
+  .avatar { width:31px; height:31px; border-radius:50%; display:grid; place-items:center; background:#2c4734; color:#c8ffda; border:1px solid rgba(30,215,96,.23); font-size:11px; font-weight:800; }
+  .content { max-width:1600px; padding: 26px 28px 38px; margin:0 auto; }
+  .hero { display:grid; grid-template-columns:minmax(0,1fr) 235px; gap:20px; align-items:stretch; margin-bottom:22px; }
+  .eyebrow { display:flex; align-items:center; gap:8px; color:var(--green); text-transform:uppercase; letter-spacing:1.8px; font-size:10px; font-weight:850; margin-bottom:10px; }
+  .eyebrow:before { content:""; height:1px; width:20px; background:var(--green); }
+  h1 { font-size:clamp(28px,3vw,43px); letter-spacing:-1.8px; line-height:1.06; margin:0 0 12px; font-weight:850; }
+  h1 em { font-style:normal; color:var(--green); }
+  .hero-copy { color:#a8b1a7; margin:0; max-width:670px; font-size:13px; }
+  .hero-card { background:linear-gradient(135deg, rgba(30,215,96,.12), rgba(30,215,96,.025)); border:1px solid var(--green-line); border-radius:16px; padding:17px; position:relative; overflow:hidden; }
+  .hero-card:after { content:""; position:absolute; width:130px; height:130px; border:1px solid rgba(30,215,96,.18); border-radius:50%; right:-48px; top:-42px; box-shadow:0 0 0 14px rgba(30,215,96,.025),0 0 0 28px rgba(30,215,96,.018); }
+  .hero-card-label { color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:1.4px; font-weight:800; }
+  .hero-card strong { display:block; font-size:27px; letter-spacing:-1px; margin-top:7px; }
+  .hero-card small { color:#9eb4a2; font-size:11px; }
+  .hero-spark { display:flex; align-items:end; gap:4px; height:29px; margin-top:12px; position:relative; z-index:1; }
+  .hero-spark span { flex:1; border-radius:4px 4px 1px 1px; background:linear-gradient(to top, #147e3c, var(--green)); opacity:.85; }
+  .section-heading { display:flex; align-items:end; justify-content:space-between; gap:12px; margin:26px 0 12px; }
+  .section-heading h2 { font-size:17px; letter-spacing:-.4px; margin:0; font-weight:800; }
+  .section-heading p { margin:4px 0 0; color:var(--muted); font-size:11px; }
+  .section-kicker { color:var(--muted-2); text-transform:uppercase; letter-spacing:1.3px; font-weight:800; font-size:10px; }
+  .metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11px; }
+  .metric { background:var(--panel); border:1px solid var(--line); border-radius:15px; padding:15px 16px; position:relative; overflow:hidden; min-width:0; }
+  .metric:after { content:""; width:58px; height:58px; border-radius:50%; position:absolute; right:-23px; top:-26px; background:rgba(255,255,255,.025); }
+  .metric-top { display:flex; gap:7px; align-items:center; color:var(--muted); font-size:11px; font-weight:650; }
+  .metric-icon { display:grid; place-items:center; width:25px; height:25px; border-radius:8px; color:var(--green); background:var(--green-soft); }
+  .metric-value { margin-top:13px; font-size:26px; letter-spacing:-1px; line-height:1; font-weight:820; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .metric-note { margin-top:8px; color:var(--muted-2); font-size:10px; }
+  .layout-main { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr); gap:13px; align-items:start; }
+  .panel { border:1px solid var(--line); border-radius:16px; background:var(--panel); min-width:0; overflow:hidden; }
+  .panel-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:16px 18px; border-bottom:1px solid var(--line); }
+  .panel-title { display:flex; align-items:center; gap:9px; font-size:13px; font-weight:800; }
+  .panel-title .icon-box { width:29px; height:29px; display:grid; place-items:center; border-radius:9px; color:var(--green); background:var(--green-soft); }
+  .panel-sub { color:var(--muted); font-size:10px; margin-top:3px; }
+  .panel-body { padding:17px; }
+  .upload-zone { min-height:132px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; border:1px dashed #4a594b; border-radius:13px; background:linear-gradient(130deg,rgba(30,215,96,.055),rgba(255,255,255,.012)); padding:18px; transition:.18s; }
+  .upload-zone.dragover { border-color:var(--green); background:rgba(30,215,96,.09); transform:scale(1.005); }
+  .upload-icon { width:39px; height:39px; display:grid; place-items:center; border-radius:13px; color:var(--green); background:var(--green-soft); margin-bottom:9px; }
+  .upload-zone strong { font-size:12px; }
+  .upload-zone p { color:var(--muted); font-size:10px; margin:4px 0 11px; }
+  .upload-actions { display:flex; align-items:center; flex-wrap:wrap; justify-content:center; gap:7px; }
+  .btn { display:inline-flex; justify-content:center; align-items:center; gap:7px; border:1px solid var(--line-strong); border-radius:9px; padding:9px 12px; font-size:11px; line-height:1.1; font-weight:750; color:#ecf4eb; background:#202520; transition:.16s; white-space:nowrap; }
+  .btn:hover { transform:translateY(-1px); border-color:rgba(255,255,255,.24); background:#293029; }
+  .btn.primary { background:var(--green); color:#07130a; border-color:var(--green); box-shadow:0 4px 18px rgba(30,215,96,.12); }
+  .btn.primary:hover { background:#4be77d; }
+  .btn.quiet { background:transparent; border-color:var(--line); color:var(--muted); }
+  .btn.quiet:hover { color:var(--text); }
+  .btn.danger { color:#ffb2c3; }
+  .btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+  .file-meta { display:flex; align-items:center; gap:9px; min-width:0; margin:13px 0; padding:10px 11px; border:1px solid var(--line); border-radius:10px; background:rgba(255,255,255,.018); }
+  .file-type { width:31px; height:34px; display:grid; place-items:center; background:#242a24; color:var(--green); border-radius:7px; font-size:9px; font-weight:900; letter-spacing:.3px; }
+  .file-details { min-width:0; flex:1; }
+  .file-details strong { display:block; font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .file-details span { display:block; color:var(--muted); font-size:10px; margin-top:2px; }
+  .file-state { color:var(--green); font-size:10px; white-space:nowrap; }
+  .controls { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+  .field label { display:block; margin-bottom:6px; font-size:10px; font-weight:750; color:#b4bdb2; }
+  .select, .search-input, .text-input { width:100%; border:1px solid var(--line-strong); outline:0; border-radius:9px; background:#0d100e; color:var(--text); padding:10px 11px; font-size:11px; min-width:0; }
+  .select:focus, .search-input:focus, .text-input:focus { border-color:rgba(30,215,96,.65); box-shadow:0 0 0 3px rgba(30,215,96,.08); }
+  .check-wrap { display:flex; align-items:center; gap:8px; padding:10px 11px; border:1px solid var(--line-strong); border-radius:9px; background:#0d100e; font-size:11px; color:var(--muted); cursor:pointer; }
+  .check-wrap input[type="checkbox"] { accent-color:var(--green); width:15px; height:15px; cursor:pointer; }
+  .run-row { display:flex; gap:8px; margin-top:14px; }
+  .run-row .btn.primary { flex:1; }
+  .tiny-note { font-size:10px; line-height:1.5; color:var(--muted-2); margin-top:10px; }
+  .csv-hint { color:var(--blue); }
+  .preview-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:20px 0 9px; }
+  .preview-head strong { font-size:11px; }
+  .preview-head span { color:var(--muted-2); font-size:10px; }
+  .table-wrap { overflow:auto; max-width:100%; border:1px solid var(--line); border-radius:10px; }
+  table { width:100%; border-collapse:collapse; font-size:10px; white-space:nowrap; }
+  thead { background:#1a201a; color:#adb8ad; }
+  th { text-align:left; padding:10px 11px; font-weight:750; border-bottom:1px solid var(--line); }
+  td { padding:9px 11px; color:#d8dfd7; border-bottom:1px solid rgba(255,255,255,.045); max-width:300px; overflow:hidden; text-overflow:ellipsis; }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody tr:hover { background:rgba(255,255,255,.025); }
+  .row-index { color:#728073; width:38px; }
+  .result-panel { background:linear-gradient(180deg,rgba(30,215,96,.035),transparent 170px),var(--panel); }
+  .result-toolbar { display:flex; gap:8px; align-items:center; padding:12px 16px; border-bottom:1px solid var(--line); }
+  .search-box { flex:1; min-width:0; position:relative; }
+  .search-box svg { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--muted-2); }
+  .search-input { padding-left:31px; }
+  .sort-label { font-size:10px; color:var(--green); font-weight:800; white-space:nowrap; }
+  .result-empty { padding:29px 18px 32px; text-align:center; }
+  .result-empty .empty-mark { width:48px; height:48px; margin:0 auto 12px; border-radius:15px; display:grid; place-items:center; color:var(--green); background:var(--green-soft); }
+  .result-empty strong { display:block; font-size:12px; }
+  .result-empty p { color:var(--muted); max-width:240px; margin:6px auto 13px; font-size:10px; }
+  .table-status { display:flex; justify-content:space-between; gap:10px; color:var(--muted-2); font-size:10px; padding:10px 2px 0; }
+  .pagination { display:flex; align-items:center; justify-content:flex-end; gap:7px; margin-top:11px; }
+  .page-count { color:var(--muted); font-size:10px; margin-right:auto; }
+  .page-btn { width:27px; height:27px; border:1px solid var(--line); background:#191e19; border-radius:7px; display:grid; place-items:center; color:#bdc6bc; }
+  .page-btn:disabled { opacity:.3; cursor:default; }
+  .tree-panel { margin-top:14px; }
+  .tree-badges { display:flex; flex-wrap:wrap; gap:6px; }
+  .tag { border:1px solid var(--line); background:rgba(255,255,255,.025); color:var(--muted); padding:5px 8px; border-radius:6px; font-size:9px; font-weight:700; }
+  .tag.green { border-color:var(--green-line); color:var(--mint); background:var(--green-soft); }
+  .tree-legend { display:flex; align-items:center; flex-wrap:wrap; gap:14px; padding:0 18px 13px; color:var(--muted); font-size:10px; }
+  .legend-dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:5px; }
+  .tree-scroll { overflow-x:auto; padding:5px 12px 15px; }
+  #treeSvg { width:100%; min-width:620px; display:block; height:auto; }
+  .tree-edge { stroke:#354137; stroke-width:1.4; }
+  .tree-node { cursor:pointer; outline:none; }
+  .tree-node circle { fill:#1a241b; stroke:#426449; stroke-width:1.5; transition:.15s; }
+  .tree-node:hover circle { stroke:var(--green); fill:#203928; }
+  .tree-node.selected circle { fill:var(--green); stroke:#b5ffca; stroke-width:2; }
+  .tree-node text { fill:#e5f4e7; pointer-events:none; font-family:inherit; text-anchor:middle; dominant-baseline:middle; font-weight:800; font-size:10px; }
+  .tree-node.selected text { fill:#07150a; }
+  .tree-node .node-sub { fill:#9aaf9c; font-weight:600; font-size:8px; }
+  .tree-node.selected .node-sub { fill:#0a431b; }
+  .tree-bottom { border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr 1.25fr; gap:0; }
+  .tree-detail { padding:14px 17px; min-width:0; border-right:1px solid var(--line); }
+  .tree-detail:last-child { border-right:0; }
+  .detail-label { color:var(--muted-2); text-transform:uppercase; letter-spacing:1px; font-size:9px; font-weight:800; }
+  .detail-value { font-size:17px; font-weight:800; letter-spacing:-.5px; margin-top:5px; }
+  .detail-copy { font-size:10px; color:var(--muted); margin-top:4px; line-height:1.4; }
+  .lower-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:13px; margin-top:14px; }
+  .activity-list { padding:8px 17px 13px; max-height:300px; overflow:auto; }
+  .activity-item { display:grid; grid-template-columns:25px minmax(0,1fr) auto; gap:10px; padding:11px 0; border-bottom:1px solid var(--line); align-items:start; }
+  .activity-item:last-child { border-bottom:0; }
+  .activity-icon { width:25px; height:25px; display:grid; place-items:center; border-radius:8px; color:var(--green); background:var(--green-soft); font-size:11px; font-weight:900; }
+  .activity-item strong { display:block; font-size:10px; }
+  .activity-item p { color:var(--muted); margin:3px 0 0; font-size:10px; }
+  .activity-item time { color:var(--muted-2); font-size:9px; white-space:nowrap; }
+  .analysis-body { padding:17px; }
+  .complexity-row { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .complexity-row:last-of-type { border-bottom:0; }
+  .complexity-row .left { display:flex; gap:9px; align-items:center; }
+  .complexity-mark { width:7px; height:7px; border-radius:3px; background:var(--green); }
+  .complexity-row strong { display:block; font-size:11px; }
+  .complexity-row small { display:block; color:var(--muted); font-size:10px; margin-top:2px; }
+  .formula { font-size:11px; color:var(--mint); background:var(--green-soft); border:1px solid var(--green-line); padding:5px 8px; border-radius:7px; font-weight:750; white-space:nowrap; }
+  .chart-wrap { border:1px solid var(--line); background:rgba(255,255,255,.015); border-radius:10px; padding:12px 13px; margin-top:13px; }
+  .chart-title { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:10px; font-weight:800; }
+  .chart-title span { color:var(--muted); font-size:9px; font-weight:600; }
+  .growth-chart { display:flex; gap:5px; align-items:end; height:86px; padding:12px 3px 0; border-bottom:1px solid var(--line-strong); }
+  .growth-bar { flex:1; background:linear-gradient(to top,#137137,var(--green)); opacity:.68; min-width:6px; border-radius:3px 3px 0 0; position:relative; }
+  .growth-labels { display:flex; justify-content:space-between; color:var(--muted-2); font-size:8px; padding-top:5px; }
+  .callout { display:flex; gap:10px; padding:12px; border:1px solid rgba(139,201,255,.18); border-radius:10px; background:rgba(139,201,255,.045); margin-top:12px; }
+  .callout svg { flex-shrink:0; color:var(--blue); }
+  .callout strong { display:block; font-size:10px; }
+  .callout p { color:var(--muted); font-size:10px; margin:3px 0 0; }
+  .footer { display:flex; justify-content:space-between; gap:10px; margin-top:25px; padding-top:14px; border-top:1px solid var(--line); color:#70796f; font-size:10px; }
+  .footer strong { color:#aeb9ad; }
+  .toast { position:fixed; z-index:20; right:22px; bottom:22px; max-width:340px; padding:12px 15px; border:1px solid var(--green-line); background:#172219; color:#eaffef; border-radius:11px; box-shadow:var(--shadow); font-size:11px; opacity:0; transform:translateY(8px); pointer-events:none; transition:.22s; }
+  .toast.show { opacity:1; transform:translateY(0); }
+  .mobile-menu { display:none; }
+  .muted { color:var(--muted); }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .warn-bar { display:flex; align-items:center; gap:9px; padding:9px 13px; background:rgba(244,217,121,.08); border:1px solid rgba(244,217,121,.2); border-radius:9px; margin-bottom:12px; font-size:10px; color:var(--yellow); }
+  .warn-bar svg { flex-shrink:0; }
+  @media (max-width:1180px) { .app { grid-template-columns:205px minmax(0,1fr); } .content { padding:22px 20px 30px; } .topbar { padding:15px 20px; } .layout-main { grid-template-columns:minmax(0,1fr); } .result-panel { min-height:250px; } .hero { grid-template-columns:minmax(0,1fr) 200px; } .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+  @media (max-width:800px) { .app { display:block; padding:0; } .sidebar { display:none; } .main-shell { border-radius:0; border:0; } .topbar { padding:13px 16px; } .mobile-menu { display:grid; place-items:center; width:32px; height:32px; border:1px solid var(--line); background:var(--panel); color:var(--text); border-radius:9px; } .crumbs { flex:1; } .status-pill { display:none; } .content { padding:20px 14px 28px; } .hero { grid-template-columns:1fr; } .hero-card { display:none; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric { padding:13px; } .metric-value { font-size:23px; } .lower-grid { grid-template-columns:1fr; } .tree-bottom { grid-template-columns:1fr 1fr; } .tree-detail:last-child { grid-column:1/-1; border-top:1px solid var(--line); } .tree-detail:nth-child(2) { border-right:0; } .section-heading { align-items:start; } }
+  @media (max-width:460px) { h1 { font-size:29px; } .topbar { gap:9px; } .top-actions { gap:6px; } .content { padding-left:10px; padding-right:10px; } .metrics { gap:8px; } .metric-value { font-size:21px; } .controls { grid-template-columns:1fr; } .run-row { flex-wrap:wrap; } .run-row .btn.primary { flex-basis:100%; } .panel-head { padding:13px; } .panel-body { padding:12px; } .tree-badges { display:none; } .tree-bottom { grid-template-columns:1fr 1fr; } .tree-detail { padding:12px; } .footer { flex-direction:column; } }
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" aria-label="Main navigation">
+    <div class="brand-card">
+      <div class="brand-mark" aria-hidden="true">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M5 6h14M5 12h14M5 18h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M8 3v18M16 3v18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55"/></svg>
+      </div>
+      <div><div class="brand-title">MergeFlow</div><span class="brand-sub">File &amp; Log Sorter</span></div>
+    </div>
+    <div class="nav-card">
+      <div class="nav-label">Workspace</div>
+      <button class="nav-item active" data-target="overview"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Overview</button>
+      <button class="nav-item" data-target="sortStudio"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 12h10m-7 5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 4v6m14-6v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Sort studio <span class="nav-badge">LIVE</span></button>
+      <button class="nav-item" data-target="recursionTree"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="2.5" y="16" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="15.5" y="16" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v4M5.5 16v-4H18.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Recursion tree</button>
+      <button class="nav-item" data-target="activity"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 12h3l2-6 4 12 2-6h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Run activity</button>
+      <div class="nav-label" style="margin-top:12px">Reference</div>
+      <button class="nav-item" data-target="analysis"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 19V5m0 14h16M8 16v-4m4 4V8m4 8v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Algorithm analysis</button>
+    </div>
+    <div class="side-bottom">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="mini-title">Merge Sort engine</span><span class="dot"></span></div>
+      <p>Stable divide-and-conquer sorting with traceable recursion.</p>
+      <div class="progress"><span></span></div>
+      <div style="display:flex;justify-content:space-between;color:#7d897c;font-size:9px;margin-top:7px"><span>LOCAL MODE</span><span>READY</span></div>
+    </div>
+    <div class="side-foot">G1 PROJECT · MERGE SORT + RECURSION TREE</div>
+  </aside>
+
+  <main class="main-shell">
+    <header class="topbar">
+      <button class="mobile-menu" id="mobileMenu" title="Go to sorter" aria-label="Go to sorter"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <div class="crumbs"><span>Workspace</span><span style="opacity:.35">/</span><strong id="crumbTitle">Overview</strong></div>
+      <div class="top-actions"><div class="status-pill"><span class="dot"></span> Browser-based · No upload server</div><div class="avatar" title="Local session">G1</div></div>
+    </header>
+
+    <div class="content" id="overview">
+      <section class="hero">
+        <div>
+          <div class="eyebrow">G1 · Merge Sort + Recursion Tree Method</div>
+          <h1>Make messy data<br/><em>fall into order.</em></h1>
+          <p class="hero-copy">A visual workspace for sorting CSV records, log lines and text files. Follow every divide, count comparisons, inspect recursion depth, and export a clean result — all right here in your browser.</p>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-label">Algorithm performance</div>
+          <strong>O(n log n)</strong>
+          <small>Predictable growth as data gets bigger</small>
+          <div class="hero-spark" aria-hidden="true"><span style="height:24%"></span><span style="height:31%"></span><span style="height:35%"></span><span style="height:43%"></span><span style="height:49%"></span><span style="height:58%"></span><span style="height:65%"></span><span style="height:73%"></span><span style="height:90%"></span><span style="height:100%"></span></div>
+        </div>
+      </section>
+
+      <!-- ========== METRICS ========== -->
+      <section class="metrics" aria-label="Sort metrics">
+        <div class="metric"><div class="metric-top"><span class="metric-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4zM8 9h8M8 13h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Records loaded</div><div class="metric-value" id="metricRecords">—</div><div class="metric-note" id="metricRecordsNote">Ready to process</div></div>
+        <div class="metric"><div class="metric-top"><span class="metric-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 5h5v5H5zM14 14h5v5h-5zM10 7h4a2 2 0 0 1 2 2v5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>Key comparisons</div><div class="metric-value" id="metricComparisons">—</div><div class="metric-note" id="metricComparisonsNote">Runs after you sort</div></div>
+        <div class="metric"><div class="metric-top"><span class="metric-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v5m0 0 3-3m-3 3L9 5M5 11v8h14v-8M8 15h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Max recursion depth</div><div class="metric-value" id="metricDepth">—</div><div class="metric-note">Logarithmic split levels</div></div>
+        <div class="metric"><div class="metric-top"><span class="metric-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 18 9 12l3 3 7-9M15 6h4v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Merge operations</div><div class="metric-value" id="metricMerges">—</div><div class="metric-note" id="metricMergesNote">Builds sorted segments</div></div>
+        <div class="metric"><div class="metric-top"><span class="metric-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 3h6v5H9zM3 14h6v5H3zM15 14h6v5h-6zM12 8v3M6 14v-3h12v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Recursive calls</div><div class="metric-value" id="metricCalls">—</div><div class="metric-note" id="metricCallsNote">Total function invocations</div></div>
+        <div class="metric"><div class="metric-top"><span class="metric-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Execution time</div><div class="metric-value" id="metricTime">—</div><div class="metric-note">Local browser measurement</div></div>
+      </section>
+
+      <!-- ========== SORT STUDIO ========== -->
+      <div class="section-heading" id="sortStudio"><div><div class="section-kicker">01 / Workbench</div><h2>Sort studio</h2><p>Load data, choose a sort key, then run the algorithm.</p></div><button class="btn quiet" id="resetBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4 5v5h5M5 10a8 8 0 1 1-1 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Reset demo</button></div>
+
+      <section class="layout-main">
+        <article class="panel">
+          <div class="panel-head"><div><div class="panel-title"><span class="icon-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 14v5h14v-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Source data</div><div class="panel-sub">CSV, LOG or TXT · processed locally</div></div><span class="tag green" id="sourceBadge">SAMPLE DATA</span></div>
+          <div class="panel-body">
+            <div id="sizeWarning" class="warn-bar" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span id="sizeWarningText">Large file detected. Sorting may take a moment.</span></div>
+            <div class="upload-zone" id="dropZone" tabindex="0" role="button" aria-label="Choose or drop a CSV, LOG, or TXT file">
+              <div class="upload-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 14v5h14v-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <strong>Drop a file to start sorting</strong><p>or choose a file from your computer · CSV, LOG, TXT up to browser memory</p>
+              <div class="upload-actions"><button class="btn primary" type="button" id="chooseFileBtn">Browse files</button><button class="btn" type="button" id="loadLogsBtn">Sample logs</button><button class="btn" type="button" id="loadCsvBtn">Sample CSV</button><button class="btn" type="button" id="loadPdfBtn">PDF example</button></div>
+              <input type="file" id="fileInput" accept=".csv,.log,.txt,text/csv,text/plain" hidden />
+            </div>
+            <div class="file-meta"><div class="file-type" id="fileType">LOG</div><div class="file-details"><strong id="fileName">sample_server.log</strong><span id="fileSubline">12 lines · demo dataset</span></div><span class="file-state" id="fileStatus">● Ready</span></div>
+            <div class="controls">
+              <div class="field"><label for="sortMode">Sort mode</label><select class="select" id="sortMode"><option value="text">Alphabetical (A → Z)</option><option value="numeric">Numeric value</option><option value="timestamp">Date / timestamp</option><option value="length">Text length</option></select></div>
+              <div class="field"><label for="csvColumn">Sort by column</label><select class="select" id="csvColumn"><option value="0">Entire record / first field</option></select></div>
+            </div>
+            <div class="controls" style="margin-top:0">
+              <div class="field"><label for="sortDir">Direction</label><select class="select" id="sortDir"><option value="asc">Ascending ↑</option><option value="desc">Descending ↓</option></select></div>
+              <div class="field" id="headerField"><label>Header row</label><label class="check-wrap"><input type="checkbox" id="headerToggle" checked /> First row contains column headers</label></div>
+            </div>
+            <div class="run-row"><button class="btn primary" id="sortBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 12h10m-7 5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="m16 15 2 2 3-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Sort with Merge Sort</button><button class="btn" id="shuffleBtn" title="Shuffle current source rows">Shuffle input</button></div>
+            <div class="tiny-note">Merge Sort is <strong style="color:#c6d3c5">stable</strong>: equal keys keep their original relative order. The algorithm follows the top-down recursive method from the PDF notes: split at mid = floor((low+high)/2), recurse on [low..mid] and [mid+1..high], then merge.</div>
+            <div class="preview-head"><strong>Input preview</strong><span id="sourcePreviewCount">Showing first 8 records</span></div>
+            <div class="table-wrap" id="sourceTableWrap"></div>
+            <div class="table-status"><span id="sourcePreviewStatus">Sample loaded</span><span>Read-only preview</span></div>
+          </div>
+        </article>
+
+        <article class="panel result-panel" id="resultsPanel">
+          <div class="panel-head"><div><div class="panel-title"><span class="icon-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 18V6m0 12h16M7 15l4-4 3 3 5-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sorted output</div><div class="panel-sub" id="resultSubtitle">Your clean result appears here</div></div><span class="tag" id="resultBadge">NOT RUN</span></div>
+          <div class="result-toolbar"><div class="search-box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input class="search-input" id="resultSearch" placeholder="Filter sorted results…" aria-label="Filter sorted results" /></div><span class="sort-label" id="sortDirectionLabel">A → Z</span></div>
+          <div class="panel-body" style="padding-top:12px">
+            <div id="resultEmpty" class="result-empty"><div class="empty-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h6m5-2 2 2 4-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><strong>Waiting for your first run</strong><p>Run Merge Sort to unlock the sorted table, algorithm metrics and recursion tree.</p><button class="btn primary" id="emptySortBtn">Sort sample data</button></div>
+            <div id="resultTableArea" hidden><div class="table-wrap" id="resultTableWrap"></div><div class="table-status"><span id="resultCountLabel">0 records</span><span id="resultSearchLabel">All records</span></div><div class="pagination"><span class="page-count" id="pageCount">Page 1 of 1</span><button class="page-btn" id="prevPage" aria-label="Previous page" disabled>‹</button><button class="page-btn" id="nextPage" aria-label="Next page" disabled>›</button></div><div class="run-row" style="margin-top:17px"><button class="btn primary" id="exportBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 4v12m0 0 4-4m-4 4-4-4M5 19h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Export sorted file</button><button class="btn" id="reportBtn">Download run report</button></div></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ========== RECURSION TREE ========== -->
+      <section class="panel tree-panel" id="recursionTree">
+        <div class="panel-head"><div><div class="panel-title"><span class="icon-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="9" y="2.5" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.7"/><rect x="2.5" y="16.5" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.7"/><rect x="15.5" y="16.5" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.5v4M5.5 16.5v-5H18.5v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Recursion tree explorer</div><div class="panel-sub">Click a node to inspect the segment handled by that recursive call.</div></div><div class="tree-badges"><span class="tag green" id="treeDepthTag">DEPTH: —</span><span class="tag" id="treeNodesTag">NODES: —</span><span class="tag" id="treeTruncTag" hidden>DISPLAY CAPPED</span><span class="tag">SPLIT → SORT → MERGE</span></div></div>
+        <div class="tree-legend"><span><i class="legend-dot" style="background:var(--green)"></i>Selected recursive call</span><span><i class="legend-dot" style="background:#426449"></i>Subproblem / segment</span><span>Numbers inside nodes = records in that segment</span></div>
+        <div class="tree-scroll"><svg id="treeSvg" viewBox="0 0 1200 230" role="img" aria-label="Merge Sort recursion tree"></svg></div>
+        <div class="tree-bottom">
+          <div class="tree-detail"><div class="detail-label">Selected segment</div><div class="detail-value" id="selectedSegment">Root · all records</div><div class="detail-copy" id="selectedSegmentCopy">Run a sort to explore the split structure.</div></div>
+          <div class="tree-detail"><div class="detail-label">Call depth</div><div class="detail-value" id="selectedDepth">—</div><div class="detail-copy" id="selectedDepthCopy">Depth starts at zero for the root.</div></div>
+          <div class="tree-detail"><div class="detail-label">What happens here</div><div class="detail-value" style="font-size:13px" id="selectedAction">Divide and conquer</div><div class="detail-copy" id="selectedActionCopy">A segment is split into smaller halves until one record remains, then the halves are merged in order.</div></div>
+        </div>
+      </section>
+
+      <!-- ========== ACTIVITY + ANALYSIS ========== -->
+      <section class="lower-grid">
+        <article class="panel" id="activity">
+          <div class="panel-head"><div><div class="panel-title"><span class="icon-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12h3l2-6 4 12 2-6h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Run activity</div><div class="panel-sub">Selected milestones from the last sort</div></div><span class="tag" id="activityCount">0 EVENTS</span></div>
+          <div class="activity-list" id="activityList"><div class="activity-item"><div class="activity-icon">↳</div><div><strong>Ready when you are</strong><p>Load a file and run Merge Sort to inspect split and merge operations.</p></div><time>—</time></div></div>
+        </article>
+        <article class="panel" id="analysis">
+          <div class="panel-head"><div><div class="panel-title"><span class="icon-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 19V5m0 14h16M8 16v-4m4 4V8m4 8v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>Algorithm analysis</div><div class="panel-sub">Why Merge Sort scales well</div></div><span class="tag green">DIVIDE &amp; CONQUER</span></div>
+          <div class="analysis-body">
+            <div class="complexity-row"><div class="left"><span class="complexity-mark"></span><div><strong>Time complexity</strong><small>Best, average and worst case</small></div></div><span class="formula">O(n log n)</span></div>
+            <div class="complexity-row"><div class="left"><span class="complexity-mark" style="background:var(--blue)"></span><div><strong>Auxiliary space</strong><small>Temporary arrays used in merging</small></div></div><span class="formula" style="color:var(--blue);background:rgba(139,201,255,.08);border-color:rgba(139,201,255,.2)">O(n)</span></div>
+            <div class="complexity-row"><div class="left"><span class="complexity-mark" style="background:var(--yellow)"></span><div><strong>Recurrence relation</strong><small>Two half-size problems + merge work</small></div></div><span class="formula" style="color:var(--yellow);background:rgba(244,217,121,.07);border-color:rgba(244,217,121,.18)">2T(n/2)+n</span></div>
+            <div class="complexity-row"><div class="left"><span class="complexity-mark" style="background:var(--rose)"></span><div><strong>Max recursion depth</strong><small>Balanced top-down splitting</small></div></div><span class="formula" style="color:var(--rose);background:rgba(255,159,187,.07);border-color:rgba(255,159,187,.18)">O(log n)</span></div>
+            <div class="chart-wrap"><div class="chart-title">Illustrative work growth <span>n log₂ n vs. n²</span></div><div class="growth-chart" id="growthChart" aria-label="Comparison of algorithm growth rates"><div class="growth-bar" style="height:9%" title="n log n"></div><div class="growth-bar" style="height:13%" title="n log n"></div><div class="growth-bar" style="height:18%" title="n log n"></div><div class="growth-bar" style="height:25%" title="n log n"></div><div class="growth-bar" style="height:34%" title="n log n"></div><div class="growth-bar" style="height:46%" title="n log n"></div><div class="growth-bar" style="height:61%" title="n log n"></div><div class="growth-bar" style="height:78%" title="n log n"></div><div class="growth-bar" style="height:100%" title="n log n"></div></div><div class="growth-labels"><span>Small input</span><span>More records →</span></div></div>
+            <div class="callout"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5m0-8h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><div><strong>Recursion tree method</strong><p>Each level represents smaller subproblems. About log₂(n) levels are needed, and each level processes roughly n records — producing O(n log n) total work. This is true for best, average and worst case because Merge Sort always divides and always merges.</p></div></div>
+          </div>
+        </article>
+      </section>
+
+      <footer class="footer"><span><strong>MergeFlow</strong> · File &amp; Log Sorter · G1 Mini-Project</span><span>Built to demonstrate Merge Sort, recursion and complexity analysis · Runs locally in your browser</span></footer>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(() => {
+  'use strict';
+
+  /* ─── Utilities ──────────────────────────────────────────────── */
+  const $ = (id) => document.getElementById(id);
+  let toastTimer = null;
+  function toast(msg) { const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3200); }
+  function esc(s) { return String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function prettyNum(n) { return Number(n||0).toLocaleString('en-US'); }
+  function formatBytes(b) { if(b<1024)return b+' B'; if(b<1048576)return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(2)+' MB'; }
+
+  /* ─── CSV parser (RFC 4180 compliant) ────────────────────────── */
+  function parseCSV(text) {
+    const rows=[]; let row=[], field='', quoted=false;
+    for (let i=0;i<text.length;i++) {
+      const c=text[i];
+      if (quoted) { if (c==='"' && text[i+1]==='"') { field+='"'; i++; } else if (c==='"') quoted=false; else field+=c; }
+      else if (c==='"' && field==='') quoted=true;
+      else if (c===',') { row.push(field); field=''; }
+      else if (c==='\n') { row.push(field.replace(/\r$/, '')); if (row.some(v=>v.trim()!=='')) rows.push(row); row=[]; field=''; }
+      else field+=c;
+    }
+    if (field.length || row.length) { row.push(field.replace(/\r$/, '')); if (row.some(v=>v.trim()!=='')) rows.push(row); }
+    return rows;
+  }
+  function csvEscape(value) { const s=String(value??''); return /[",\n\r]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
+
+  /* ─── Built-in sample datasets ───────────────────────────────── */
+  const samples = {
+    logs: `2026-10-21 12:04:18 INFO  API server started on port 8080\n2026-10-21 12:04:21 WARN  Slow database query: 840 ms\n2026-10-21 12:03:57 ERROR Failed login for user: guest\n2026-10-21 12:04:05 INFO  Cache warmed successfully\n2026-10-21 12:02:46 INFO  Scheduled backup completed\n2026-10-21 12:04:12 ERROR Payment service timeout after 3000 ms\n2026-10-21 12:03:33 DEBUG Request received: GET /api/movies\n2026-10-21 12:04:24 INFO  Health check passed\n2026-10-21 12:01:08 WARN  Disk usage reached 82 percent\n2026-10-21 12:03:01 INFO  User session created: U1042\n2026-10-21 12:02:10 ERROR Connection refused by upstream host\n2026-10-21 12:04:28 DEBUG Response sent: status 200`,
+    csv: `Movie,Genre,Rating,Year,Tickets Sold\nNeon Horizon,Sci-Fi,8.7,2024,1240\nMidnight Signal,Thriller,7.9,2022,910\nPaper Kingdom,Drama,8.2,2023,760\nLast Summer,Romance,6.8,2021,650\nPixel Raiders,Action,7.4,2025,1830\nThe Quiet Sea,Drama,9.1,2020,530\nParallel Lines,Sci-Fi,8.5,2024,1490\nGolden Hour,Romance,7.1,2022,840\nCold Case 09,Thriller,7.8,2023,1170\nRed Comet,Action,8.0,2025,1620\nBlue Atlas,Adventure,7.6,2021,720\n"Rise, Fall & Redemption",Drama,8.3,2023,880\nAfter the Rain,Drama,8.9,2024,990`,
+    pdfExample: `310\n285\n179\n652\n351\n423\n861\n254\n450\n520`
+  };
+
+  /* ─── Application state ──────────────────────────────────────── */
+  const state = {
+    filename:'sample_server.log', extension:'log', text:samples.logs, isCsv:false,
+    headers:[], sourceRows:[], resultRows:[], sorted:false,
+    stats:null, events:[], treeNodes:[], selectedNode:null,
+    page:1, pageSize:10, search:'', originalSourceRows:[]
+  };
+
+  /* ─── Data loading & parsing ─────────────────────────────────── */
+  function normalizeRows() {
+    const ext=state.extension.toLowerCase();
+    const useHeader=$('headerToggle').checked;
+    if (ext==='csv' || state.filename.toLowerCase().endsWith('.csv')) {
+      const parsed=parseCSV(state.text);
+      if (!parsed.length) { state.headers=[]; state.sourceRows=[]; state.isCsv=true; return; }
+      state.isCsv=true;
+      const first=parsed[0];
+      const headerLike = useHeader && first.some(x=>/[a-zA-Z]/.test(x)) && !first.every(x=>x.trim()!=='' && !Number.isNaN(Number(x)));
+      if (headerLike) {
+        state.headers=first.map((h,i)=>h.trim()||('Column '+(i+1)));
+        state.sourceRows=parsed.slice(1).map(row=>state.headers.map((_,i)=>row[i]??''));
+      } else {
+        const width=Math.max(...parsed.map(r=>r.length));
+        state.headers=Array.from({length:width},(_,i)=>'Column '+(i+1));
+        state.sourceRows=parsed.map(row=>state.headers.map((_,i)=>row[i]??''));
+      }
+    } else {
+      state.isCsv=false; state.headers=['Record'];
+      state.sourceRows=state.text.split(/\r?\n/).filter(x=>x.trim()!=='').map(x=>[x]);
+    }
+    state.originalSourceRows=state.sourceRows.map(r=>r.slice());
+    buildColumnOptions();
+  }
+  function buildColumnOptions() {
+    const select=$('csvColumn'); select.innerHTML='';
+    if (state.isCsv) state.headers.forEach((h,i)=>{const opt=document.createElement('option');opt.value=String(i);opt.textContent=h;select.appendChild(opt);});
+    else { const opt=document.createElement('option'); opt.value='0'; opt.textContent='Entire record / full line'; select.appendChild(opt); }
+    select.disabled=!state.isCsv || state.headers.length<=1;
+    $('headerField').style.display=state.isCsv?'':'none';
+  }
+  function loadText(text, filename, announce=true) {
+    if (!text && text!=='') { toast('File appears to be empty.'); return; }
+    state.filename=filename||'uploaded_file.txt'; state.extension=(state.filename.split('.').pop()||'txt').toLowerCase(); state.text=text; state.sorted=false; state.resultRows=[]; state.stats=null; state.events=[]; state.treeNodes=[]; state.page=1; state.search=''; $('resultSearch').value='';
+    const size=new Blob([text]).size;
+    /* Large-file warning */
+    if (size>5*1048576) { $('sizeWarning').hidden=false; $('sizeWarningText').textContent='Very large file ('+formatBytes(size)+'). Sorting may freeze the browser for several seconds.'; }
+    else if (size>1048576) { $('sizeWarning').hidden=false; $('sizeWarningText').textContent='Large file detected ('+formatBytes(size)+'). Sorting may take a moment.'; }
+    else $('sizeWarning').hidden=true;
+    normalizeRows();
+    $('sourceBadge').textContent=state.filename.startsWith('sample_')||state.filename==='pdf_example.txt'?'SAMPLE DATA':'FILE LOADED';
+    $('fileType').textContent=state.extension.toUpperCase().slice(0,4);
+    $('fileName').textContent=state.filename;
+    $('fileSubline').textContent=prettyNum(state.sourceRows.length)+' records · '+formatBytes(size);
+    $('fileStatus').textContent='● Ready';
+    $('metricRecords').textContent=prettyNum(state.sourceRows.length); $('metricRecordsNote').textContent=state.isCsv?state.headers.length+' columns detected':'Lines ready to process';
+    $('metricComparisons').textContent='—'; $('metricComparisonsNote').textContent='Runs after you sort';
+    $('metricDepth').textContent='—'; $('metricMerges').textContent='—'; $('metricMergesNote').textContent='Builds sorted segments';
+    $('metricCalls').textContent='—'; $('metricCallsNote').textContent='Total function invocations'; $('metricTime').textContent='—';
+    $('resultEmpty').hidden=false; $('resultTableArea').hidden=true; $('resultBadge').textContent='NOT RUN'; $('resultBadge').className='tag'; $('resultSubtitle').textContent='Your clean result appears here';
+    $('sourcePreviewCount').textContent='Showing first '+Math.min(8,state.sourceRows.length)+' records';
+    $('sourcePreviewStatus').textContent='Input loaded · ready to sort';
+    renderSourceTable(); renderTreePlaceholder(); renderActivityPlaceholder();
+    if (announce) toast('Loaded '+state.filename+' · '+prettyNum(state.sourceRows.length)+' records found');
+  }
+
+  /* ─── Table rendering ────────────────────────────────────────── */
+  function renderTable(container, rows, headers, offset) {
+    offset=offset||0;
+    if (!rows.length) { container.innerHTML='<div style="padding:18px;text-align:center;color:var(--muted);font-size:10px">No matching records.</div>'; return; }
+    let html='<table><thead><tr><th class="row-index">#</th>';
+    for(let c=0;c<headers.length;c++) html+='<th>'+esc(headers[c])+'</th>';
+    html+='</tr></thead><tbody>';
+    rows.forEach((row,i)=>{ html+='<tr><td class="row-index">'+prettyNum(offset+i+1)+'</td>'; for(let c=0;c<headers.length;c++) html+='<td title="'+esc(row[c]??'')+'">'+esc(row[c]??'')+'</td>'; html+='</tr>'; });
+    html+='</tbody></table>'; container.innerHTML=html;
+  }
+  function renderSourceTable() { const rows=state.sourceRows.slice(0,8); renderTable($('sourceTableWrap'),rows,state.headers); $('sourcePreviewCount').textContent='Showing '+rows.length+' of '+prettyNum(state.sourceRows.length); }
+
+  /* ─── Comparison & key extraction ────────────────────────────── */
+  function keyValue(row) { return state.isCsv ? (row[Number($('csvColumn').value)||0]??'') : (row[0]??''); }
+  function extractNumber(s) { const match=String(s).replace(/,/g,'').match(/[-+]?(?:\d*\.)?\d+/); return match?Number(match[0]):NaN; }
+  function compareValues(a,b,mode) {
+    if(mode==='numeric') { const na=extractNumber(a), nb=extractNumber(b); if(Number.isFinite(na)&&Number.isFinite(nb)) return na-nb; if(Number.isFinite(na)) return -1; if(Number.isFinite(nb)) return 1; return String(a).localeCompare(String(b),undefined,{numeric:true,sensitivity:'base'}); }
+    if(mode==='timestamp') { const da=Date.parse(a), db=Date.parse(b); if(Number.isFinite(da)&&Number.isFinite(db)) return da-db; if(Number.isFinite(da)) return -1; if(Number.isFinite(db)) return 1; return String(a).localeCompare(String(b),undefined,{numeric:true,sensitivity:'base'}); }
+    if(mode==='length') return String(a).length-String(b).length || String(a).localeCompare(String(b),undefined,{sensitivity:'base'});
+    return String(a).localeCompare(String(b),undefined,{numeric:true,sensitivity:'base'});
+  }
+
+  /* ─── MERGE SORT — Top-down recursive (PDF algorithm) ────────
+   *
+   *   MergeSort(arr, low, high):
+   *     if low >= high: return               ← base case
+   *     mid = floor((low + high) / 2)
+   *     MergeSort(arr, low, mid)             ← sort left half
+   *     MergeSort(arr, mid + 1, high)        ← sort right half
+   *     Merge(arr, low, mid, high)           ← merge sorted halves
+   *
+   *   Both low and high are inclusive indices.
+   *   This is a STABLE sort: equal keys preserve their input order.
+   * ─────────────────────────────────────────────────────────────── */
+  function mergeSort(items, mode, keyFn, direction) {
+    let comparisons=0, merges=0, calls=0, maxDepth=0, moves=0;
+    const events=[], treeNodes=[];
+    const n=items.length;
+    const work=items.slice();
+    let nodeCounter=0;
+    const MAX_EVENTS=300;
+    const dir=direction==='desc'?-1:1;
+
+    function sort(low, high, depth, parentId) {
+      calls++; if(depth>maxDepth) maxDepth=depth;
+      const nodeId=nodeCounter++;
+      const node={id:nodeId, low:low, high:high, depth:depth, count:high-low+1, parentId:parentId, childIds:[], isLeaf:low>=high, truncated:false};
+      treeNodes.push(node);
+
+      /* Base case: subarray has at most one element */
+      if (low >= high) {
+        if (events.length<MAX_EVENTS) {
+          const val = low===high ? String(keyFn(work[low])) : '';
+          events.push({type:'base', low, high, depth, extra: low===high ? 'Base case: index '+low+' = "'+val+'"' : 'Empty segment'});
+        }
+        return nodeId;
+      }
+
+      /* Find the middle — matches PDF: mid = floor((low + high) / 2) */
+      const mid = Math.floor((low + high) / 2);
+
+      if (events.length<MAX_EVENTS) events.push({type:'split', low, high, depth, extra:'Split ['+low+'..'+high+'] at mid='+mid});
+
+      /* Recursively sort left half [low..mid] */
+      const leftId = sort(low, mid, depth+1, nodeId);
+      node.childIds.push(leftId);
+
+      /* Recursively sort right half [mid+1..high] */
+      const rightId = sort(mid+1, high, depth+1, nodeId);
+      node.childIds.push(rightId);
+
+      /* Merge sorted halves */
+      merges++;
+      const left=work.slice(low, mid+1);
+      const right=work.slice(mid+1, high+1);
+      let i=0, j=0, k=low;
+      while (i<left.length && j<right.length) {
+        comparisons++;
+        const cmp = compareValues(keyFn(left[i]), keyFn(right[j]), mode) * dir;
+        if (cmp<=0) { work[k++]=left[i++]; } else { work[k++]=right[j++]; }
+        moves++;
+      }
+      while(i<left.length) { work[k++]=left[i++]; moves++; }
+      while(j<right.length) { work[k++]=right[j++]; moves++; }
+
+      if (events.length<MAX_EVENTS) events.push({type:'merge', low, high, depth, extra:'Merged '+(high-low+1)+' records ['+low+'..'+high+']'});
+
+      return nodeId;
+    }
+
+    if (n>0) sort(0, n-1, 0, null);
+    events.push({type:'done', low:0, high:n-1, depth:0, extra:'Sort complete: '+n+' records sorted with '+comparisons+' comparisons'});
+    return {sorted:work, stats:{comparisons,merges,calls,maxDepth,moves,n}, events, treeNodes};
+  }
+
+  /* ─── Sort orchestration ─────────────────────────────────────── */
+  function performSort() {
+    if(!state.sourceRows.length) { toast('Load a file with at least one record first.'); return; }
+    const button=$('sortBtn'); button.disabled=true;
+    button.innerHTML='<span style="display:inline-block;width:11px;height:11px;border:2px solid rgba(0,0,0,.25);border-top-color:#06130a;border-radius:50%;animation:spin .7s linear infinite"></span> Sorting…';
+    requestAnimationFrame(()=>setTimeout(()=>{
+      const start=performance.now();
+      const mode=$('sortMode').value;
+      const direction=$('sortDir').value;
+      const result=mergeSort(state.sourceRows, mode, keyValue, direction);
+      const elapsed=performance.now()-start;
+
+      state.resultRows=result.sorted; state.treeNodes=result.treeNodes; state.events=result.events; state.sorted=true; state.page=1; state.search=''; $('resultSearch').value='';
+      state.stats={...result.stats, elapsedMs:elapsed, mode:mode, direction:direction, field:state.headers[Number($('csvColumn').value)||0]||'Record', filename:state.filename};
+
+      /* Update all metrics */
+      $('metricRecords').textContent=prettyNum(result.stats.n); $('metricRecordsNote').textContent=state.isCsv?state.headers.length+' columns · '+formatBytes(new Blob([state.text]).size):'Source lines processed';
+      $('metricComparisons').textContent=prettyNum(result.stats.comparisons); $('metricComparisonsNote').textContent=prettyNum(result.stats.moves)+' record placements';
+      $('metricDepth').textContent=String(result.stats.maxDepth);
+      $('metricMerges').textContent=prettyNum(result.stats.merges); $('metricMergesNote').textContent='Sorted segments joined';
+      $('metricCalls').textContent=prettyNum(result.stats.calls); $('metricCallsNote').textContent=result.stats.calls===1?'Single base case':'Recursive + base case calls';
+      $('metricTime').textContent=elapsed<1?elapsed.toFixed(3)+' ms':elapsed.toFixed(2)+' ms';
+      $('resultEmpty').hidden=true; $('resultTableArea').hidden=false; $('resultBadge').textContent='SORTED'; $('resultBadge').className='tag green';
+      $('resultSubtitle').textContent=prettyNum(result.stats.n)+' records · '+elapsed.toFixed(2)+' ms in browser';
+      /* Direction label */
+      const labels={text:{asc:'A → Z',desc:'Z → A'},numeric:{asc:'0 → 9',desc:'9 → 0'},timestamp:{asc:'OLD → NEW',desc:'NEW → OLD'},length:{asc:'SHORT → LONG',desc:'LONG → SHORT'}};
+      $('sortDirectionLabel').textContent=(labels[mode]||labels.text)[direction]||'SORTED';
+      $('fileStatus').textContent='● Sorted'; $('sourceBadge').textContent='SORT COMPLETE';
+      renderResultPage(); renderTree(); renderActivity(); updateSelectedNode(null); updateGrowthChart(result.stats.n);
+      button.disabled=false; button.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 12h10m-7 5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="m16 15 2 2 3-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Sort with Merge Sort';
+      toast('Sorted '+prettyNum(result.stats.n)+' records in '+elapsed.toFixed(2)+' ms');
+    }, 20));
+  }
+
+  /* ─── Result table + pagination ──────────────────────────────── */
+  function filteredResults() {
+    const q=state.search.trim().toLowerCase();
+    if(!q) return state.resultRows.map((r,i)=>({row:r,idx:i}));
+    return state.resultRows.map((row,i)=>({row,idx:i})).filter(item=>item.row.some(cell=>String(cell).toLowerCase().includes(q)));
+  }
+  function renderResultPage() {
+    const items=filteredResults(); const totalPages=Math.max(1,Math.ceil(items.length/state.pageSize)); state.page=Math.min(state.page,totalPages);
+    const start=(state.page-1)*state.pageSize; const pageItems=items.slice(start,start+state.pageSize);
+    renderTable($('resultTableWrap'),pageItems.map(x=>x.row),state.headers,start);
+    $('resultCountLabel').textContent=prettyNum(items.length)+' matching records';
+    $('resultSearchLabel').textContent=state.search?'Filtered by "'+state.search+'"':'All records';
+    $('pageCount').textContent='Page '+state.page+' of '+totalPages; $('prevPage').disabled=state.page<=1; $('nextPage').disabled=state.page>=totalPages;
+  }
+
+  /* ─── Recursion tree (built from actual sort run) ────────────── */
+  function renderTreePlaceholder() {
+    $('treeSvg').setAttribute('viewBox','0 0 1200 230');
+    $('treeSvg').innerHTML='<text x="600" y="100" fill="#7b887a" font-size="14" text-anchor="middle">Your recursion tree will appear after sorting.</text><text x="600" y="125" fill="#536052" font-size="10" text-anchor="middle">Run Merge Sort to see the split structure</text>';
+    $('treeDepthTag').textContent='DEPTH: —'; $('treeNodesTag').textContent='NODES: —'; $('treeTruncTag').hidden=true;
+    $('selectedSegment').textContent='Root · all records'; $('selectedSegmentCopy').textContent='Run a sort to explore the split structure.';
+    $('selectedDepth').textContent='—'; $('selectedDepthCopy').textContent='Depth starts at zero for the root.';
+    $('selectedAction').textContent='Divide and conquer'; $('selectedActionCopy').textContent='A segment is split into smaller halves until one record remains, then the halves are merged in order.';
+  }
+  function renderTree() {
+    if (!state.stats || !state.treeNodes.length) return renderTreePlaceholder();
+    const actualDepth=state.stats.maxDepth;
+    /* Limit display depth to keep diagram readable */
+    const maxDisplayDepth = Math.min(actualDepth, state.stats.n<=16?actualDepth : state.stats.n<=64?5 : 4);
+    const displayNodes = state.treeNodes.filter(n=>n.depth<=maxDisplayDepth);
+    /* Mark nodes at cut-off that have children beyond display */
+    displayNodes.forEach(n=>{ if(!n.isLeaf && n.depth===maxDisplayDepth && maxDisplayDepth<actualDepth) n.truncated=true; else n.truncated=false; });
+    const isTruncated=maxDisplayDepth<actualDepth;
+    $('treeTruncTag').hidden=!isTruncated; if(isTruncated) $('treeTruncTag').textContent='SHOWING '+maxDisplayDepth+' OF '+actualDepth+' LEVELS';
+
+    /* Layout nodes per level */
+    const levels=[]; displayNodes.forEach(node=>(levels[node.depth]??(levels[node.depth]=[])).push(node));
+    const maxAtLevel=Math.max(...levels.map(l=>l.length));
+    const nodeSpacing=48; const circleR=maxAtLevel>24?14:maxAtLevel>16?17:21;
+    const width=Math.max(1200, maxAtLevel*nodeSpacing);
+    const top=38, levelGap=circleR>17?75:circleR>14?65:55;
+    const height=top+maxDisplayDepth*levelGap+50;
+
+    levels.forEach((level,d)=>level.forEach((node,i)=>{ node.x=(i+0.5)*width/level.length; node.y=top+d*levelGap; }));
+
+    let edges='', circles='';
+    /* Build a quick id→node lookup for parent coords */
+    const lookup={}; displayNodes.forEach(n=>lookup[n.id]=n);
+
+    displayNodes.forEach(node=>{
+      if(node.parentId!==null && lookup[node.parentId]) {
+        const p=lookup[node.parentId];
+        edges+='<line class="tree-edge" x1="'+p.x+'" y1="'+(p.y+circleR)+'" x2="'+node.x+'" y2="'+(node.y-circleR)+'" />';
+      }
+    });
+    displayNodes.forEach(node=>{
+      const selected=state.selectedNode===node.id;
+      const label=node.truncated?'+'+node.count:String(node.count);
+      const range=node.count===1?'#'+(node.low+1):(node.low+1)+'–'+(node.high+1);
+      const fontSize=circleR<17?8:circleR<21?9:10;
+      const subSize=circleR<17?6:circleR<21?7:8;
+      circles+='<g class="tree-node'+(selected?' selected':'')+'" data-node="'+node.id+'" tabindex="0" role="button" aria-label="Depth '+node.depth+', '+node.count+' records, indices '+range+'">'
+        +'<title>Depth '+node.depth+' · records '+range+' · '+node.count+' item'+(node.count===1?'':'s')+'</title>'
+        +'<circle cx="'+node.x+'" cy="'+node.y+'" r="'+circleR+'"></circle>'
+        +'<text x="'+node.x+'" y="'+(node.y-(circleR>14?3:2))+'" style="font-size:'+fontSize+'px">'+label+'</text>'
+        +'<text class="node-sub" x="'+node.x+'" y="'+(node.y+(circleR>14?10:7))+'" style="font-size:'+subSize+'px">D'+node.depth+'</text>'
+        +'</g>';
+    });
+    const svg=$('treeSvg');
+    svg.setAttribute('viewBox','0 0 '+width+' '+height); svg.style.minWidth=Math.min(width,1200)+'px';
+    svg.innerHTML=edges+circles;
+    svg.querySelectorAll('[data-node]').forEach(el=>{
+      const pick=()=>{ state.selectedNode=Number(el.getAttribute('data-node')); svg.querySelectorAll('[data-node]').forEach(e=>e.classList.toggle('selected',Number(e.getAttribute('data-node'))===state.selectedNode)); updateSelectedNode(state.selectedNode); };
+      el.addEventListener('click',pick); el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();}});
+    });
+    $('treeDepthTag').textContent='DEPTH: '+state.stats.maxDepth; $('treeNodesTag').textContent='NODES: '+prettyNum(state.stats.calls);
+  }
+  function updateSelectedNode(id) {
+    if(!state.stats||!state.treeNodes.length) return;
+    if(id===null||id===undefined) id=0;
+    const n=state.treeNodes.find(node=>node.id===id)||state.treeNodes[0]; state.selectedNode=n.id;
+    const range=n.count===1?'record '+(n.low+1):'records '+(n.low+1)+'–'+(n.high+1);
+    /* Show actual values in this segment from the ORIGINAL (pre-sort) source rows */
+    const vals=state.originalSourceRows.slice(n.low, n.high+1).map(r=>keyValue(r));
+    const valStr=vals.length<=8?vals.map(v=>'"'+v+'"').join(', '):(vals.slice(0,6).map(v=>'"'+v+'"').join(', ')+' … +'+(vals.length-6)+' more');
+
+    $('selectedSegment').textContent=n.depth===0?'Root · all records':'Segment '+(n.low+1)+'–'+(n.high+1);
+    $('selectedSegmentCopy').textContent=n.count+' record'+(n.count===1?'':'s')+' in '+range+'. Values: '+valStr+(n.truncated?' (subtree levels not shown for readability)':'');
+    $('selectedDepth').textContent=String(n.depth);
+    $('selectedDepthCopy').textContent=n.depth===0?'The first call receives the complete input.':'This call is '+n.depth+' split'+(n.depth===1?'':'s')+' away from the root.';
+    $('selectedAction').textContent=n.isLeaf?'Base case reached':n.truncated?'Subtree (display limit)':'Split → Sort → Merge';
+    $('selectedActionCopy').textContent=n.isLeaf?'A single record is already sorted. Recursion returns it to the parent call for merging.':n.truncated?'This node\'s subtree continues beyond the display limit, but the algorithm processed every recursive call. Accurate metrics are shown above.':'MergeSort('+n.low+', '+n.high+'): computes mid='+Math.floor((n.low+n.high)/2)+', sorts left ['+n.low+'..'+Math.floor((n.low+n.high)/2)+'] and right ['+(Math.floor((n.low+n.high)/2)+1)+'..'+n.high+'], then merges the sorted halves.';
+  }
+
+  /* ─── Activity feed ──────────────────────────────────────────── */
+  function renderActivityPlaceholder() { $('activityCount').textContent='0 EVENTS'; $('activityList').innerHTML='<div class="activity-item"><div class="activity-icon">↳</div><div><strong>Ready when you are</strong><p>Load a file and run Merge Sort to inspect split and merge operations.</p></div><time>—</time></div>'; }
+  function renderActivity() {
+    const allEvents=state.events;
+    $('activityCount').textContent=prettyNum(allEvents.length)+' EVENTS';
+    if(!allEvents.length) return renderActivityPlaceholder();
+    const show=allEvents.slice(0,20);
+    const html=show.map((ev,i)=>{
+      let type, icon, msg;
+      if(ev.type==='split') { type='SPLIT'; icon='↘'; msg='Divided records '+(ev.low+1)+'–'+(ev.high+1)+' at midpoint index '+Math.floor((ev.low+ev.high)/2)+'.'; }
+      else if(ev.type==='merge') { type='MERGE'; icon='⇄'; msg='Merged sorted halves for records '+(ev.low+1)+'–'+(ev.high+1)+' ('+(ev.high-ev.low+1)+' items).'; }
+      else if(ev.type==='base') { type='BASE'; icon='•'; msg='Single element at index '+ev.low+' (depth '+ev.depth+').'; }
+      else if(ev.type==='done') { type='DONE'; icon='✓'; msg=ev.extra; }
+      else { type=ev.type.toUpperCase(); icon='·'; msg=ev.extra||''; }
+      return '<div class="activity-item"><div class="activity-icon">'+icon+'</div><div><strong>'+type+' · depth '+ev.depth+'</strong><p>'+esc(msg)+'</p></div><time>#'+(i+1)+'</time></div>';
+    }).join('');
+    const more=allEvents.length>20?'<div class="activity-item"><div class="activity-icon">…</div><div><strong>'+(allEvents.length-20)+' more events</strong><p>Event log capped at 20 for readability. All '+prettyNum(allEvents.length)+' events were counted in the metrics above.</p></div><time></time></div>':'';
+    $('activityList').innerHTML=html+more;
+  }
+
+  /* ─── Growth chart ───────────────────────────────────────────── */
+  function updateGrowthChart() {
+    const chart=$('growthChart'); const count=9; const bars=[];
+    for(let i=0;i<count;i++) { const sz=Math.max(2,Math.round((i+1)*Math.log2(i+2))); const mx=count*Math.log2(count+1); const h=Math.max(9,Math.min(100,sz/mx*100)); bars.push('<div class="growth-bar" style="height:'+h+'%" title="Illustrative n log₂ n work"></div>'); }
+    chart.innerHTML=bars.join('');
+  }
+
+  /* ─── Export sorted data ─────────────────────────────────────── */
+  function downloadBlob(blob, name) { const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1200); }
+  function exportSorted() {
+    if(!state.sorted) return toast('Sort the data before exporting.');
+    let content, ext;
+    if(state.isCsv) { content=[state.headers,...state.resultRows].map(row=>row.map(csvEscape).join(',')).join('\r\n'); ext='.csv'; }
+    else { content=state.resultRows.map(r=>r[0]??'').join('\r\n'); ext='.txt'; }
+    const safeName=state.filename.replace(/[^a-zA-Z0-9._-]/g,'_');
+    downloadBlob(new Blob([content],{type:state.isCsv?'text/csv;charset=utf-8':'text/plain;charset=utf-8'}),'sorted_'+safeName); toast('Sorted output exported.');
+  }
+  function exportReport() {
+    if(!state.sorted||!state.stats) return toast('Run Merge Sort to create a report.');
+    const report={
+      project:'MergeFlow — File & Log Sorter', group:'G1', algorithm:'Top-down Recursive Merge Sort',
+      sourceFile:state.filename, records:state.stats.n,
+      sortMode:state.stats.mode, sortDirection:state.stats.direction, sortField:state.stats.field,
+      metrics:{ comparisons:state.stats.comparisons, mergeOperations:state.stats.merges, recursiveCalls:state.stats.calls, maxRecursionDepth:state.stats.maxDepth, recordPlacements:state.stats.moves, measuredMilliseconds:Number(state.stats.elapsedMs.toFixed(3)) },
+      complexity:{ time:'O(n log n) for best, average and worst case', auxiliarySpace:'O(n)', maxRecursionDepth:'O(log n)', recurrence:'T(n) = 2T(n/2) + O(n)' },
+      sortedPreview:state.resultRows.slice(0,20).map(r=>state.isCsv?Object.fromEntries(state.headers.map((h,i)=>[h,r[i]])):r[0]),
+      note:'Elapsed time is a local browser measurement and varies by device and input size. Comparisons, merges and calls come from the actual algorithm execution.'
+    };
+    downloadBlob(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}),'mergeflow_report_'+Date.now()+'.json'); toast('Run report exported as JSON.');
+  }
+
+  /* ─── Shuffle ────────────────────────────────────────────────── */
+  function shuffleInput() {
+    if(state.sourceRows.length<2) return toast('Load at least two records to shuffle.');
+    const rows=state.sourceRows.slice(); for(let i=rows.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[rows[i],rows[j]]=[rows[j],rows[i]];}
+    state.sourceRows=rows; state.originalSourceRows=rows.map(r=>r.slice());
+    state.text=state.isCsv?[state.headers,...rows].map(r=>r.map(csvEscape).join(',')).join('\n'):rows.map(r=>r[0]).join('\n');
+    state.sorted=false; state.resultRows=[]; state.stats=null; state.events=[]; state.treeNodes=[];
+    $('sourceBadge').textContent='INPUT SHUFFLED'; $('fileStatus').textContent='● Ready';
+    $('metricComparisons').textContent='—'; $('metricDepth').textContent='—'; $('metricMerges').textContent='—'; $('metricCalls').textContent='—'; $('metricTime').textContent='—';
+    $('resultEmpty').hidden=false; $('resultTableArea').hidden=true; $('resultBadge').textContent='NOT RUN'; $('resultBadge').className='tag';
+    renderSourceTable(); renderTreePlaceholder(); renderActivityPlaceholder(); toast('Input order shuffled. Run Merge Sort again to compare.');
+  }
+
+  /* ─── Sample loading helpers ─────────────────────────────────── */
+  function useSample(which) {
+    if(which==='pdf') {
+      $('sortMode').value='numeric'; $('sortDir').value='asc';
+      loadText(samples.pdfExample, 'pdf_example.txt');
+    } else if(which==='csv') {
+      $('sortMode').value='text';
+      loadText(samples.csv, 'sample_movies.csv');
+    } else {
+      $('sortMode').value='timestamp';
+      loadText(samples.logs, 'sample_server.log');
+    }
+  }
+
+  /* ─── Event listeners ────────────────────────────────────────── */
+  $('chooseFileBtn').addEventListener('click',e=>{e.stopPropagation();$('fileInput').click();});
+  $('dropZone').addEventListener('click',e=>{ if(e.target.closest('button'))return; $('fileInput').click(); });
+  $('dropZone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('fileInput').click();}});
+  $('fileInput').addEventListener('change',async e=>{
+    const file=e.target.files&&e.target.files[0]; if(!file) return;
+    const ext=(file.name.split('.').pop()||'').toLowerCase();
+    if(!['csv','log','txt'].includes(ext)){toast('Unsupported file type. Please use CSV, LOG or TXT files.'); e.target.value=''; return;}
+    try{ const text=await file.text(); loadText(text,file.name); }catch(err){ toast('Could not read that file. Please try another.'); }
+    e.target.value='';
+  });
+  const dz=$('dropZone');
+  ['dragenter','dragover'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.add('dragover');}));
+  ['dragleave','drop'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.remove('dragover');}));
+  dz.addEventListener('drop',async e=>{
+    const file=e.dataTransfer.files&&e.dataTransfer.files[0]; if(!file)return;
+    const ext=(file.name.split('.').pop()||'').toLowerCase();
+    if(!['csv','log','txt'].includes(ext)){toast('Please choose a CSV, LOG or TXT file.');return;}
+    try{loadText(await file.text(),file.name);}catch(err){toast('Could not read that file.');}
+  });
+  $('loadLogsBtn').addEventListener('click',()=>useSample('logs'));
+  $('loadCsvBtn').addEventListener('click',()=>useSample('csv'));
+  $('loadPdfBtn').addEventListener('click',()=>useSample('pdf'));
+  $('sortBtn').addEventListener('click',performSort);
+  $('emptySortBtn').addEventListener('click',performSort);
+  $('exportBtn').addEventListener('click',exportSorted);
+  $('reportBtn').addEventListener('click',exportReport);
+  $('shuffleBtn').addEventListener('click',shuffleInput);
+  $('resetBtn').addEventListener('click',()=>useSample('logs'));
+  $('resultSearch').addEventListener('input',e=>{state.search=e.target.value;state.page=1;if(state.sorted)renderResultPage();});
+  $('prevPage').addEventListener('click',()=>{if(state.page>1){state.page--;renderResultPage();}});
+  $('nextPage').addEventListener('click',()=>{state.page++;renderResultPage();});
+  $('sortMode').addEventListener('change',()=>{if(state.sorted)toast('Sort mode changed. Run Merge Sort again to apply.');});
+  $('sortDir').addEventListener('change',()=>{if(state.sorted)toast('Direction changed. Run Merge Sort again to apply.');});
+  $('csvColumn').addEventListener('change',()=>{if(state.sorted)toast('Sort field changed. Run Merge Sort again to apply.');});
+  $('headerToggle').addEventListener('change',()=>{ normalizeRows(); renderSourceTable(); if(state.sorted){state.sorted=false;state.resultRows=[];state.stats=null; $('resultEmpty').hidden=false;$('resultTableArea').hidden=true;$('resultBadge').textContent='NOT RUN';$('resultBadge').className='tag'; renderTreePlaceholder();renderActivityPlaceholder();} toast('Header detection '+ ($('headerToggle').checked?'enabled':'disabled')+'. Columns updated.'); });
+  $('mobileMenu').addEventListener('click',()=>{document.querySelector('#sortStudio').scrollIntoView({behavior:'smooth',block:'start'});});
+  document.querySelectorAll('.nav-item[data-target]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const target=$(btn.dataset.target);if(target)target.scrollIntoView({behavior:'smooth',block:'start'});$('crumbTitle').textContent=btn.textContent.trim();}));
+
+  /* ─── Init ───────────────────────────────────────────────────── */
+  loadText(samples.logs,'sample_server.log',false);
+  performSort();
+})();
+</script>
+</body>
+</html>

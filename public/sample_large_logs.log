@@ -1,0 +1,500 @@
+2026-10-21 09:19:34 [WARN] payment-gateway: Transaction committed
+2026-10-21 10:00:51 [DEBUG] auth-service: Slow query detected: 520ms
+2026-10-21 08:00:20 [INFO] cache-manager: Payload serialized: 1204 bytes
+2026-10-21 09:20:18 [WARN] cache-manager: Transaction committed
+2026-10-21 08:52:04 [WARN] api-router: Payload serialized: 1204 bytes
+2026-10-21 08:46:14 [INFO] database-pool: Rate limit threshold approaching 80%
+2026-10-21 08:56:33 [DEBUG] worker-queue: Token verified successfully
+2026-10-21 08:18:51 [INFO] auth-service: Payload serialized: 1204 bytes
+2026-10-21 09:42:23 [WARN] worker-queue: Connection pool refreshed
+2026-10-21 08:39:30 [INFO] payment-gateway: Connection pool refreshed
+2026-10-21 10:04:42 [DEBUG] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 08:35:51 [WARN] auth-service: Transaction committed
+2026-10-21 08:52:42 [WARN] cache-manager: Request processed in 42ms
+2026-10-21 09:57:34 [ERROR] auth-service: Keep-alive heartbeat received
+2026-10-21 08:49:54 [WARN] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:55:26 [ERROR] cache-manager: Slow query detected: 520ms
+2026-10-21 10:09:18 [ERROR] cache-manager: Cache miss for key user:session
+2026-10-21 09:08:16 [INFO] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:34:00 [ERROR] api-router: Token verified successfully
+2026-10-21 08:52:58 [ERROR] worker-queue: Slow query detected: 520ms
+2026-10-21 08:31:14 [ERROR] auth-service: Rate limit threshold approaching 80%
+2026-10-21 08:09:07 [INFO] api-router: Request processed in 42ms
+2026-10-21 08:30:05 [DEBUG] worker-queue: Token verified successfully
+2026-10-21 08:25:28 [WARN] auth-service: Keep-alive heartbeat received
+2026-10-21 09:14:18 [DEBUG] api-router: Transaction committed
+2026-10-21 09:27:59 [WARN] cache-manager: Cache miss for key user:session
+2026-10-21 08:57:13 [WARN] database-pool: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:37:22 [WARN] worker-queue: Connection pool refreshed
+2026-10-21 09:13:08 [DEBUG] api-router: Request processed in 42ms
+2026-10-21 08:32:47 [WARN] api-router: Slow query detected: 520ms
+2026-10-21 09:04:09 [ERROR] worker-queue: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:33:41 [DEBUG] worker-queue: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:32:42 [DEBUG] worker-queue: Keep-alive heartbeat received
+2026-10-21 09:29:48 [INFO] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:19:25 [ERROR] api-router: Rate limit threshold approaching 80%
+2026-10-21 09:28:42 [DEBUG] database-pool: Cache miss for key user:session
+2026-10-21 08:24:10 [WARN] database-pool: Request processed in 42ms
+2026-10-21 09:15:54 [WARN] cache-manager: Slow query detected: 520ms
+2026-10-21 10:08:15 [WARN] api-router: Keep-alive heartbeat received
+2026-10-21 08:45:16 [WARN] api-router: Token verified successfully
+2026-10-21 08:02:05 [WARN] worker-queue: Transaction committed
+2026-10-21 08:22:44 [INFO] payment-gateway: Keep-alive heartbeat received
+2026-10-21 09:01:44 [DEBUG] database-pool: Connection pool refreshed
+2026-10-21 09:29:07 [ERROR] auth-service: Slow query detected: 520ms
+2026-10-21 10:07:01 [ERROR] worker-queue: Transaction committed
+2026-10-21 08:50:50 [WARN] database-pool: Request processed in 42ms
+2026-10-21 08:37:41 [WARN] worker-queue: Token verified successfully
+2026-10-21 09:28:01 [INFO] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 10:08:28 [DEBUG] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:07:37 [ERROR] api-router: Payload serialized: 1204 bytes
+2026-10-21 09:07:45 [ERROR] auth-service: Keep-alive heartbeat received
+2026-10-21 08:12:38 [INFO] database-pool: Slow query detected: 520ms
+2026-10-21 08:58:12 [ERROR] auth-service: Keep-alive heartbeat received
+2026-10-21 08:12:45 [ERROR] worker-queue: Slow query detected: 520ms
+2026-10-21 09:51:53 [INFO] cache-manager: Transaction committed
+2026-10-21 09:11:41 [INFO] api-router: Payload serialized: 1204 bytes
+2026-10-21 09:29:23 [DEBUG] worker-queue: Cache miss for key user:session
+2026-10-21 08:11:09 [ERROR] payment-gateway: Connection pool refreshed
+2026-10-21 10:09:56 [DEBUG] auth-service: Rate limit threshold approaching 80%
+2026-10-21 09:06:48 [ERROR] database-pool: Rate limit threshold approaching 80%
+2026-10-21 09:18:14 [WARN] payment-gateway: Token verified successfully
+2026-10-21 09:58:24 [ERROR] database-pool: Cache miss for key user:session
+2026-10-21 09:11:30 [INFO] database-pool: Keep-alive heartbeat received
+2026-10-21 08:04:53 [INFO] auth-service: Payload serialized: 1204 bytes
+2026-10-21 08:14:16 [WARN] worker-queue: Payload serialized: 1204 bytes
+2026-10-21 08:56:42 [WARN] database-pool: Token verified successfully
+2026-10-21 08:50:16 [DEBUG] payment-gateway: Connection pool refreshed
+2026-10-21 08:18:16 [DEBUG] api-router: Keep-alive heartbeat received
+2026-10-21 09:25:45 [DEBUG] payment-gateway: Token verified successfully
+2026-10-21 08:50:35 [DEBUG] payment-gateway: Token verified successfully
+2026-10-21 09:19:07 [DEBUG] auth-service: Cache miss for key user:session
+2026-10-21 09:34:07 [INFO] database-pool: Connection pool refreshed
+2026-10-21 09:54:56 [WARN] worker-queue: Keep-alive heartbeat received
+2026-10-21 08:32:31 [WARN] auth-service: Connection pool refreshed
+2026-10-21 08:46:47 [WARN] auth-service: Token verified successfully
+2026-10-21 10:00:55 [WARN] database-pool: Token verified successfully
+2026-10-21 09:38:51 [ERROR] payment-gateway: Transaction committed
+2026-10-21 09:47:23 [INFO] worker-queue: Request processed in 42ms
+2026-10-21 08:17:05 [INFO] database-pool: Rate limit threshold approaching 80%
+2026-10-21 09:23:21 [WARN] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:48:15 [WARN] cache-manager: Request processed in 42ms
+2026-10-21 09:22:35 [WARN] api-router: Request processed in 42ms
+2026-10-21 08:55:10 [ERROR] cache-manager: Token verified successfully
+2026-10-21 09:48:52 [DEBUG] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:20:59 [DEBUG] api-router: Cache miss for key user:session
+2026-10-21 08:01:39 [WARN] database-pool: Transaction committed
+2026-10-21 08:57:51 [DEBUG] payment-gateway: Cache miss for key user:session
+2026-10-21 08:28:42 [INFO] database-pool: Cache miss for key user:session
+2026-10-21 08:08:32 [WARN] worker-queue: Request processed in 42ms
+2026-10-21 10:03:15 [DEBUG] payment-gateway: Payload serialized: 1204 bytes
+2026-10-21 09:21:35 [ERROR] worker-queue: Slow query detected: 520ms
+2026-10-21 09:56:53 [WARN] cache-manager: Slow query detected: 520ms
+2026-10-21 09:43:04 [INFO] cache-manager: Request processed in 42ms
+2026-10-21 08:56:22 [ERROR] database-pool: Cache miss for key user:session
+2026-10-21 09:05:15 [INFO] api-router: Cache miss for key user:session
+2026-10-21 09:30:11 [INFO] auth-service: Token verified successfully
+2026-10-21 08:34:17 [INFO] worker-queue: Request processed in 42ms
+2026-10-21 09:05:47 [DEBUG] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 09:12:11 [DEBUG] worker-queue: Cache miss for key user:session
+2026-10-21 08:44:36 [INFO] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:03:17 [DEBUG] auth-service: Request processed in 42ms
+2026-10-21 09:49:20 [WARN] auth-service: Keep-alive heartbeat received
+2026-10-21 08:05:35 [ERROR] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:23:41 [DEBUG] payment-gateway: Slow query detected: 520ms
+2026-10-21 08:29:38 [ERROR] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 09:10:04 [WARN] database-pool: Connection pool refreshed
+2026-10-21 08:09:45 [WARN] worker-queue: Keep-alive heartbeat received
+2026-10-21 08:02:45 [WARN] worker-queue: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:26:13 [ERROR] api-router: Rate limit threshold approaching 80%
+2026-10-21 10:06:12 [DEBUG] payment-gateway: Request processed in 42ms
+2026-10-21 08:30:34 [ERROR] api-router: Cache miss for key user:session
+2026-10-21 09:25:07 [DEBUG] payment-gateway: Cache miss for key user:session
+2026-10-21 08:23:23 [WARN] database-pool: Keep-alive heartbeat received
+2026-10-21 09:37:57 [INFO] auth-service: Payload serialized: 1204 bytes
+2026-10-21 09:50:47 [ERROR] worker-queue: Token verified successfully
+2026-10-21 08:35:36 [ERROR] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 10:02:05 [DEBUG] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:24:17 [INFO] cache-manager: Token verified successfully
+2026-10-21 09:41:14 [ERROR] api-router: Request processed in 42ms
+2026-10-21 08:49:32 [DEBUG] payment-gateway: Transaction committed
+2026-10-21 08:26:08 [ERROR] cache-manager: Connection pool refreshed
+2026-10-21 09:40:48 [ERROR] cache-manager: Keep-alive heartbeat received
+2026-10-21 09:42:08 [WARN] api-router: Keep-alive heartbeat received
+2026-10-21 09:40:22 [INFO] cache-manager: Keep-alive heartbeat received
+2026-10-21 08:39:05 [ERROR] database-pool: Request processed in 42ms
+2026-10-21 10:00:33 [WARN] payment-gateway: Transaction committed
+2026-10-21 09:44:35 [WARN] worker-queue: Cache miss for key user:session
+2026-10-21 08:26:46 [DEBUG] worker-queue: Transaction committed
+2026-10-21 10:02:58 [WARN] database-pool: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:33:08 [ERROR] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 09:49:06 [INFO] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:38:00 [INFO] payment-gateway: Connection pool refreshed
+2026-10-21 08:13:57 [INFO] api-router: Cache miss for key user:session
+2026-10-21 10:07:28 [WARN] auth-service: Connection pool refreshed
+2026-10-21 09:16:48 [ERROR] api-router: Connection pool refreshed
+2026-10-21 08:00:40 [INFO] worker-queue: Connection pool refreshed
+2026-10-21 08:11:23 [DEBUG] api-router: Payload serialized: 1204 bytes
+2026-10-21 08:55:39 [WARN] database-pool: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:55:34 [WARN] cache-manager: Keep-alive heartbeat received
+2026-10-21 08:22:08 [INFO] worker-queue: Connection pool refreshed
+2026-10-21 09:17:27 [ERROR] worker-queue: Request processed in 42ms
+2026-10-21 09:18:18 [INFO] cache-manager: Token verified successfully
+2026-10-21 08:08:47 [INFO] cache-manager: Connection pool refreshed
+2026-10-21 09:04:55 [INFO] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 09:47:46 [WARN] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:12:22 [ERROR] api-router: Payload serialized: 1204 bytes
+2026-10-21 09:33:42 [DEBUG] database-pool: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:53:10 [ERROR] database-pool: Payload serialized: 1204 bytes
+2026-10-21 09:02:44 [WARN] cache-manager: Cache miss for key user:session
+2026-10-21 10:06:03 [DEBUG] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 08:15:24 [ERROR] payment-gateway: Payload serialized: 1204 bytes
+2026-10-21 09:40:26 [INFO] database-pool: Token verified successfully
+2026-10-21 08:10:13 [DEBUG] cache-manager: Token verified successfully
+2026-10-21 09:37:28 [INFO] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 09:07:56 [DEBUG] api-router: Payload serialized: 1204 bytes
+2026-10-21 08:30:51 [WARN] api-router: Token verified successfully
+2026-10-21 08:24:19 [DEBUG] cache-manager: Transaction committed
+2026-10-21 08:53:42 [ERROR] database-pool: Transaction committed
+2026-10-21 08:32:42 [WARN] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 08:05:40 [INFO] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 10:03:56 [DEBUG] payment-gateway: Request processed in 42ms
+2026-10-21 09:54:06 [INFO] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 09:54:30 [WARN] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:00:58 [WARN] auth-service: Keep-alive heartbeat received
+2026-10-21 10:06:31 [ERROR] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 08:04:04 [DEBUG] payment-gateway: Payload serialized: 1204 bytes
+2026-10-21 09:14:38 [ERROR] payment-gateway: Cache miss for key user:session
+2026-10-21 09:23:51 [ERROR] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 09:24:51 [DEBUG] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:40:45 [ERROR] auth-service: Keep-alive heartbeat received
+2026-10-21 09:28:10 [ERROR] api-router: Transaction committed
+2026-10-21 09:17:04 [INFO] cache-manager: Transaction committed
+2026-10-21 10:06:34 [DEBUG] api-router: Token verified successfully
+2026-10-21 09:01:19 [WARN] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 10:08:58 [DEBUG] payment-gateway: Connection pool refreshed
+2026-10-21 08:05:38 [ERROR] worker-queue: Cache miss for key user:session
+2026-10-21 09:52:53 [DEBUG] payment-gateway: Payload serialized: 1204 bytes
+2026-10-21 08:54:50 [DEBUG] payment-gateway: Transaction committed
+2026-10-21 08:48:58 [WARN] worker-queue: Keep-alive heartbeat received
+2026-10-21 08:02:22 [WARN] worker-queue: Keep-alive heartbeat received
+2026-10-21 09:07:13 [DEBUG] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 08:06:11 [INFO] auth-service: Connection pool refreshed
+2026-10-21 09:57:21 [WARN] database-pool: Keep-alive heartbeat received
+2026-10-21 08:06:06 [ERROR] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:46:23 [WARN] payment-gateway: Connection pool refreshed
+2026-10-21 09:54:35 [INFO] database-pool: Transaction committed
+2026-10-21 09:48:24 [DEBUG] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:44:10 [WARN] worker-queue: Connection pool refreshed
+2026-10-21 10:02:28 [DEBUG] payment-gateway: Transaction committed
+2026-10-21 08:53:13 [WARN] auth-service: Keep-alive heartbeat received
+2026-10-21 10:07:58 [DEBUG] api-router: Token verified successfully
+2026-10-21 10:11:37 [ERROR] database-pool: Connection pool refreshed
+2026-10-21 08:16:35 [DEBUG] auth-service: Token verified successfully
+2026-10-21 08:40:13 [WARN] database-pool: Request processed in 42ms
+2026-10-21 09:36:28 [DEBUG] database-pool: Cache miss for key user:session
+2026-10-21 08:38:54 [INFO] worker-queue: Connection pool refreshed
+2026-10-21 08:54:47 [WARN] cache-manager: Cache miss for key user:session
+2026-10-21 09:40:58 [DEBUG] database-pool: Rate limit threshold approaching 80%
+2026-10-21 09:05:55 [WARN] cache-manager: Transaction committed
+2026-10-21 09:05:37 [ERROR] auth-service: Transaction committed
+2026-10-21 09:25:34 [INFO] worker-queue: Connection pool refreshed
+2026-10-21 09:14:58 [WARN] api-router: Keep-alive heartbeat received
+2026-10-21 08:27:17 [WARN] payment-gateway: Slow query detected: 520ms
+2026-10-21 09:05:12 [WARN] cache-manager: Request processed in 42ms
+2026-10-21 08:28:18 [INFO] cache-manager: Keep-alive heartbeat received
+2026-10-21 09:48:14 [ERROR] worker-queue: Token verified successfully
+2026-10-21 08:20:13 [ERROR] worker-queue: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:33:26 [INFO] auth-service: Slow query detected: 520ms
+2026-10-21 08:41:43 [DEBUG] cache-manager: Transaction committed
+2026-10-21 09:39:28 [WARN] database-pool: Rate limit threshold approaching 80%
+2026-10-21 09:39:00 [INFO] database-pool: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:44:20 [WARN] cache-manager: Slow query detected: 520ms
+2026-10-21 08:02:15 [WARN] payment-gateway: Connection pool refreshed
+2026-10-21 08:20:03 [INFO] api-router: Keep-alive heartbeat received
+2026-10-21 08:16:04 [DEBUG] cache-manager: Request processed in 42ms
+2026-10-21 09:47:11 [DEBUG] auth-service: Token verified successfully
+2026-10-21 09:37:04 [WARN] cache-manager: Connection pool refreshed
+2026-10-21 08:23:20 [DEBUG] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:25:59 [ERROR] api-router: Connection pool refreshed
+2026-10-21 10:05:25 [DEBUG] worker-queue: Cache miss for key user:session
+2026-10-21 09:13:48 [WARN] payment-gateway: Token verified successfully
+2026-10-21 09:25:19 [INFO] worker-queue: Connection pool refreshed
+2026-10-21 09:31:42 [DEBUG] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 08:59:17 [ERROR] database-pool: Rate limit threshold approaching 80%
+2026-10-21 08:21:57 [ERROR] database-pool: Payload serialized: 1204 bytes
+2026-10-21 08:16:44 [WARN] worker-queue: Transaction committed
+2026-10-21 08:04:28 [DEBUG] auth-service: Payload serialized: 1204 bytes
+2026-10-21 10:05:52 [DEBUG] api-router: Cache miss for key user:session
+2026-10-21 08:42:13 [WARN] api-router: Connection pool refreshed
+2026-10-21 09:36:45 [ERROR] auth-service: Token verified successfully
+2026-10-21 08:48:26 [ERROR] auth-service: Slow query detected: 520ms
+2026-10-21 08:35:11 [WARN] cache-manager: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:38:09 [WARN] cache-manager: Payload serialized: 1204 bytes
+2026-10-21 09:02:27 [DEBUG] worker-queue: Keep-alive heartbeat received
+2026-10-21 08:41:20 [ERROR] payment-gateway: Token verified successfully
+2026-10-21 09:04:40 [WARN] payment-gateway: Payload serialized: 1204 bytes
+2026-10-21 09:13:20 [DEBUG] database-pool: Transaction committed
+2026-10-21 09:12:36 [DEBUG] database-pool: Transaction committed
+2026-10-21 08:21:01 [DEBUG] database-pool: Connection pool refreshed
+2026-10-21 09:59:46 [DEBUG] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:54:09 [DEBUG] api-router: Rate limit threshold approaching 80%
+2026-10-21 08:13:35 [DEBUG] api-router: Request processed in 42ms
+2026-10-21 09:21:13 [INFO] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 08:50:31 [WARN] database-pool: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:51:23 [WARN] cache-manager: Payload serialized: 1204 bytes
+2026-10-21 09:30:48 [INFO] database-pool: Slow query detected: 520ms
+2026-10-21 09:46:56 [DEBUG] worker-queue: Slow query detected: 520ms
+2026-10-21 09:30:22 [WARN] worker-queue: Slow query detected: 520ms
+2026-10-21 08:14:40 [INFO] database-pool: Rate limit threshold approaching 80%
+2026-10-21 08:39:33 [INFO] cache-manager: Token verified successfully
+2026-10-21 08:55:55 [INFO] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:26:34 [WARN] database-pool: Rate limit threshold approaching 80%
+2026-10-21 10:01:47 [WARN] cache-manager: Cache miss for key user:session
+2026-10-21 08:21:31 [WARN] auth-service: Payload serialized: 1204 bytes
+2026-10-21 08:20:40 [WARN] api-router: Cache miss for key user:session
+2026-10-21 09:31:27 [INFO] auth-service: Slow query detected: 520ms
+2026-10-21 09:21:21 [ERROR] api-router: Cache miss for key user:session
+2026-10-21 09:28:31 [WARN] worker-queue: Token verified successfully
+2026-10-21 09:00:31 [DEBUG] api-router: Transaction committed
+2026-10-21 09:03:36 [WARN] cache-manager: Transaction committed
+2026-10-21 09:40:16 [INFO] database-pool: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:17:34 [ERROR] api-router: Token verified successfully
+2026-10-21 09:10:30 [INFO] database-pool: Transaction committed
+2026-10-21 09:11:43 [WARN] api-router: Payload serialized: 1204 bytes
+2026-10-21 09:20:16 [INFO] auth-service: Connection pool refreshed
+2026-10-21 08:28:10 [DEBUG] cache-manager: Payload serialized: 1204 bytes
+2026-10-21 08:25:45 [ERROR] payment-gateway: Slow query detected: 520ms
+2026-10-21 09:32:15 [WARN] auth-service: Payload serialized: 1204 bytes
+2026-10-21 08:55:16 [ERROR] cache-manager: Token verified successfully
+2026-10-21 08:15:44 [ERROR] cache-manager: Cache miss for key user:session
+2026-10-21 09:19:55 [WARN] database-pool: Cache miss for key user:session
+2026-10-21 09:05:57 [WARN] cache-manager: Request processed in 42ms
+2026-10-21 09:50:17 [DEBUG] payment-gateway: Keep-alive heartbeat received
+2026-10-21 09:52:45 [ERROR] auth-service: Request processed in 42ms
+2026-10-21 09:33:31 [WARN] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:25:17 [ERROR] cache-manager: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:52:32 [INFO] api-router: Cache miss for key user:session
+2026-10-21 09:50:56 [ERROR] api-router: Keep-alive heartbeat received
+2026-10-21 09:01:15 [DEBUG] cache-manager: Payload serialized: 1204 bytes
+2026-10-21 08:00:59 [WARN] worker-queue: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:04:08 [WARN] auth-service: Request processed in 42ms
+2026-10-21 09:39:35 [INFO] database-pool: Slow query detected: 520ms
+2026-10-21 08:07:56 [INFO] database-pool: Token verified successfully
+2026-10-21 08:47:35 [WARN] payment-gateway: Slow query detected: 520ms
+2026-10-21 09:34:33 [ERROR] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 08:25:07 [ERROR] api-router: Transaction committed
+2026-10-21 09:04:14 [ERROR] database-pool: Request processed in 42ms
+2026-10-21 08:17:57 [ERROR] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 09:38:16 [ERROR] api-router: Token verified successfully
+2026-10-21 08:32:15 [ERROR] cache-manager: Keep-alive heartbeat received
+2026-10-21 08:24:51 [ERROR] cache-manager: Payload serialized: 1204 bytes
+2026-10-21 09:36:16 [ERROR] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 09:41:44 [DEBUG] worker-queue: Cache miss for key user:session
+2026-10-21 08:42:30 [WARN] api-router: Transaction committed
+2026-10-21 08:40:22 [ERROR] worker-queue: Connection pool refreshed
+2026-10-21 09:49:40 [WARN] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 09:42:46 [DEBUG] auth-service: Rate limit threshold approaching 80%
+2026-10-21 08:31:45 [INFO] database-pool: Request processed in 42ms
+2026-10-21 09:33:29 [WARN] api-router: Slow query detected: 520ms
+2026-10-21 08:03:33 [INFO] worker-queue: Connection pool refreshed
+2026-10-21 09:11:29 [WARN] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 09:40:01 [DEBUG] api-router: Rate limit threshold approaching 80%
+2026-10-21 09:26:42 [INFO] api-router: Keep-alive heartbeat received
+2026-10-21 09:51:06 [INFO] worker-queue: Request processed in 42ms
+2026-10-21 08:53:51 [DEBUG] payment-gateway: Keep-alive heartbeat received
+2026-10-21 09:56:01 [WARN] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 08:30:00 [DEBUG] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:43:44 [ERROR] worker-queue: Cache miss for key user:session
+2026-10-21 08:46:55 [ERROR] auth-service: Cache miss for key user:session
+2026-10-21 08:59:46 [ERROR] api-router: Transaction committed
+2026-10-21 09:39:53 [WARN] api-router: Request processed in 42ms
+2026-10-21 08:42:10 [DEBUG] payment-gateway: Request processed in 42ms
+2026-10-21 09:27:33 [WARN] api-router: Request processed in 42ms
+2026-10-21 08:55:38 [DEBUG] worker-queue: Transaction committed
+2026-10-21 08:06:42 [INFO] cache-manager: Transaction committed
+2026-10-21 09:15:28 [DEBUG] payment-gateway: Token verified successfully
+2026-10-21 08:35:23 [ERROR] database-pool: Cache miss for key user:session
+2026-10-21 08:04:03 [ERROR] worker-queue: Transaction committed
+2026-10-21 09:48:28 [WARN] auth-service: Connection pool refreshed
+2026-10-21 10:01:15 [INFO] auth-service: Request processed in 42ms
+2026-10-21 08:15:01 [INFO] auth-service: Slow query detected: 520ms
+2026-10-21 08:23:07 [DEBUG] api-router: Transaction committed
+2026-10-21 09:21:53 [INFO] api-router: Transaction committed
+2026-10-21 09:58:35 [INFO] payment-gateway: Transaction committed
+2026-10-21 09:45:26 [DEBUG] cache-manager: Cache miss for key user:session
+2026-10-21 08:22:30 [DEBUG] payment-gateway: Transaction committed
+2026-10-21 08:47:56 [ERROR] auth-service: Cache miss for key user:session
+2026-10-21 08:58:38 [INFO] cache-manager: Payload serialized: 1204 bytes
+2026-10-21 08:59:22 [ERROR] database-pool: Request processed in 42ms
+2026-10-21 09:36:57 [INFO] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 08:18:31 [WARN] api-router: Transaction committed
+2026-10-21 08:01:15 [WARN] worker-queue: Request processed in 42ms
+2026-10-21 09:35:22 [ERROR] auth-service: Connection pool refreshed
+2026-10-21 09:03:46 [WARN] auth-service: Request processed in 42ms
+2026-10-21 08:01:05 [DEBUG] auth-service: Cache miss for key user:session
+2026-10-21 10:11:22 [INFO] database-pool: Connection pool refreshed
+2026-10-21 08:11:53 [DEBUG] api-router: Request processed in 42ms
+2026-10-21 08:53:49 [INFO] database-pool: Cache miss for key user:session
+2026-10-21 08:06:26 [WARN] worker-queue: Keep-alive heartbeat received
+2026-10-21 09:36:05 [INFO] database-pool: Connection pool refreshed
+2026-10-21 09:04:28 [DEBUG] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:28:05 [WARN] payment-gateway: Token verified successfully
+2026-10-21 09:25:02 [INFO] payment-gateway: Keep-alive heartbeat received
+2026-10-21 08:59:00 [ERROR] api-router: Request processed in 42ms
+2026-10-21 09:44:58 [WARN] cache-manager: Transaction committed
+2026-10-21 09:44:55 [DEBUG] database-pool: Slow query detected: 520ms
+2026-10-21 10:00:15 [DEBUG] api-router: Payload serialized: 1204 bytes
+2026-10-21 08:43:29 [ERROR] payment-gateway: Slow query detected: 520ms
+2026-10-21 08:40:50 [DEBUG] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:46:36 [DEBUG] payment-gateway: Request processed in 42ms
+2026-10-21 09:53:59 [ERROR] api-router: Connection pool refreshed
+2026-10-21 09:12:09 [ERROR] worker-queue: Payload serialized: 1204 bytes
+2026-10-21 09:38:38 [DEBUG] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 09:34:51 [ERROR] auth-service: Connection pool refreshed
+2026-10-21 08:26:24 [DEBUG] api-router: Payload serialized: 1204 bytes
+2026-10-21 09:11:23 [ERROR] database-pool: Keep-alive heartbeat received
+2026-10-21 08:24:44 [INFO] cache-manager: Request processed in 42ms
+2026-10-21 08:27:00 [ERROR] api-router: Token verified successfully
+2026-10-21 09:59:05 [DEBUG] cache-manager: Request processed in 42ms
+2026-10-21 09:19:39 [DEBUG] worker-queue: Transaction committed
+2026-10-21 10:01:39 [ERROR] auth-service: Slow query detected: 520ms
+2026-10-21 09:09:08 [DEBUG] database-pool: Token verified successfully
+2026-10-21 08:30:22 [ERROR] cache-manager: Connection pool refreshed
+2026-10-21 09:18:02 [DEBUG] cache-manager: Request processed in 42ms
+2026-10-21 09:12:54 [INFO] api-router: Request processed in 42ms
+2026-10-21 09:51:30 [ERROR] database-pool: Cache miss for key user:session
+2026-10-21 08:58:28 [INFO] api-router: Request processed in 42ms
+2026-10-21 08:48:54 [ERROR] worker-queue: Cache miss for key user:session
+2026-10-21 10:04:05 [INFO] worker-queue: Transaction committed
+2026-10-21 09:58:42 [ERROR] database-pool: Rate limit threshold approaching 80%
+2026-10-21 08:42:11 [INFO] cache-manager: Cache miss for key user:session
+2026-10-21 08:05:15 [DEBUG] auth-service: Cache miss for key user:session
+2026-10-21 08:35:55 [WARN] cache-manager: Payload serialized: 1204 bytes
+2026-10-21 10:10:51 [DEBUG] api-router: Request processed in 42ms
+2026-10-21 08:25:12 [ERROR] database-pool: Request processed in 42ms
+2026-10-21 09:06:19 [ERROR] auth-service: Slow query detected: 520ms
+2026-10-21 08:13:44 [WARN] database-pool: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:47:19 [WARN] auth-service: Request processed in 42ms
+2026-10-21 08:54:18 [WARN] payment-gateway: Connection pool refreshed
+2026-10-21 09:28:50 [ERROR] worker-queue: Payload serialized: 1204 bytes
+2026-10-21 09:23:32 [INFO] database-pool: Keep-alive heartbeat received
+2026-10-21 08:51:08 [ERROR] auth-service: Keep-alive heartbeat received
+2026-10-21 09:32:59 [DEBUG] auth-service: Transaction committed
+2026-10-21 09:55:40 [INFO] api-router: Slow query detected: 520ms
+2026-10-21 10:05:06 [WARN] cache-manager: Connection pool refreshed
+2026-10-21 08:43:14 [ERROR] cache-manager: Rate limit threshold approaching 80%
+2026-10-21 09:02:03 [INFO] worker-queue: Transaction committed
+2026-10-21 08:10:56 [DEBUG] auth-service: Connection pool refreshed
+2026-10-21 10:00:02 [INFO] cache-manager: Connection pool refreshed
+2026-10-21 08:09:18 [ERROR] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:49:01 [ERROR] payment-gateway: Slow query detected: 520ms
+2026-10-21 10:09:41 [DEBUG] database-pool: Cache miss for key user:session
+2026-10-21 08:12:25 [INFO] database-pool: Connection pool refreshed
+2026-10-21 09:49:23 [INFO] database-pool: Keep-alive heartbeat received
+2026-10-21 08:57:36 [DEBUG] worker-queue: Connection pool refreshed
+2026-10-21 08:36:57 [WARN] auth-service: Transaction committed
+2026-10-21 09:08:57 [WARN] cache-manager: Cache miss for key user:session
+2026-10-21 08:27:43 [DEBUG] auth-service: Rate limit threshold approaching 80%
+2026-10-21 08:47:39 [ERROR] payment-gateway: Payload serialized: 1204 bytes
+2026-10-21 09:48:43 [WARN] api-router: Transaction committed
+2026-10-21 08:08:26 [WARN] database-pool: Token verified successfully
+2026-10-21 08:53:29 [DEBUG] api-router: Transaction committed
+2026-10-21 09:35:37 [DEBUG] cache-manager: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:10:58 [DEBUG] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:08:49 [DEBUG] database-pool: Transaction committed
+2026-10-21 09:22:09 [ERROR] api-router: Slow query detected: 520ms
+2026-10-21 08:34:13 [DEBUG] cache-manager: Slow query detected: 520ms
+2026-10-21 09:45:54 [ERROR] worker-queue: Token verified successfully
+2026-10-21 08:12:56 [DEBUG] payment-gateway: Slow query detected: 520ms
+2026-10-21 08:33:06 [DEBUG] api-router: Transaction committed
+2026-10-21 09:08:21 [WARN] database-pool: Connection pool refreshed
+2026-10-21 08:42:53 [DEBUG] cache-manager: Keep-alive heartbeat received
+2026-10-21 08:33:47 [WARN] api-router: Slow query detected: 520ms
+2026-10-21 09:56:23 [ERROR] api-router: Cache miss for key user:session
+2026-10-21 09:09:42 [INFO] api-router: Payload serialized: 1204 bytes
+2026-10-21 09:07:17 [WARN] auth-service: Rate limit threshold approaching 80%
+2026-10-21 09:05:59 [DEBUG] worker-queue: Keep-alive heartbeat received
+2026-10-21 08:41:40 [ERROR] database-pool: Rate limit threshold approaching 80%
+2026-10-21 08:07:01 [INFO] auth-service: Slow query detected: 520ms
+2026-10-21 10:10:27 [INFO] auth-service: Connection pool refreshed
+2026-10-21 08:45:06 [INFO] cache-manager: Keep-alive heartbeat received
+2026-10-21 08:24:37 [INFO] auth-service: Connection pool refreshed
+2026-10-21 08:43:35 [DEBUG] cache-manager: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:34:44 [WARN] auth-service: Slow query detected: 520ms
+2026-10-21 08:45:47 [INFO] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 08:46:27 [DEBUG] api-router: Keep-alive heartbeat received
+2026-10-21 08:19:06 [INFO] api-router: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:43:53 [INFO] auth-service: Token verified successfully
+2026-10-21 09:24:34 [ERROR] auth-service: Connection pool refreshed
+2026-10-21 09:00:12 [WARN] payment-gateway: Slow query detected: 520ms
+2026-10-21 08:31:17 [INFO] payment-gateway: Payload serialized: 1204 bytes
+2026-10-21 08:00:17 [ERROR] auth-service: Rate limit threshold approaching 80%
+2026-10-21 09:58:01 [ERROR] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 09:27:12 [INFO] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 09:46:50 [ERROR] api-router: Transaction committed
+2026-10-21 09:09:25 [INFO] cache-manager: Token verified successfully
+2026-10-21 09:18:38 [DEBUG] api-router: Payload serialized: 1204 bytes
+2026-10-21 09:02:58 [WARN] auth-service: Keep-alive heartbeat received
+2026-10-21 08:59:24 [WARN] cache-manager: Request processed in 42ms
+2026-10-21 09:08:31 [ERROR] auth-service: Connection pool refreshed
+2026-10-21 09:20:47 [WARN] database-pool: Slow query detected: 520ms
+2026-10-21 08:19:36 [INFO] auth-service: Cache miss for key user:session
+2026-10-21 08:33:21 [WARN] database-pool: Token verified successfully
+2026-10-21 09:03:12 [WARN] cache-manager: Connection pool refreshed
+2026-10-21 08:59:08 [WARN] api-router: Keep-alive heartbeat received
+2026-10-21 08:30:49 [WARN] cache-manager: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:31:03 [INFO] payment-gateway: Connection pool refreshed
+2026-10-21 08:18:34 [ERROR] cache-manager: Keep-alive heartbeat received
+2026-10-21 09:52:23 [INFO] database-pool: Rate limit threshold approaching 80%
+2026-10-21 09:23:01 [WARN] auth-service: Rate limit threshold approaching 80%
+2026-10-21 09:30:50 [WARN] auth-service: Token verified successfully
+2026-10-21 09:53:31 [ERROR] cache-manager: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:04:02 [ERROR] auth-service: Keep-alive heartbeat received
+2026-10-21 08:07:48 [INFO] worker-queue: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:43:29 [INFO] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:15:32 [INFO] api-router: Request processed in 42ms
+2026-10-21 08:23:46 [DEBUG] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:25:24 [WARN] database-pool: Token verified successfully
+2026-10-21 09:16:25 [INFO] worker-queue: Transaction committed
+2026-10-21 08:10:38 [WARN] payment-gateway: Cache miss for key user:session
+2026-10-21 09:54:08 [WARN] worker-queue: Token verified successfully
+2026-10-21 08:48:34 [WARN] api-router: Keep-alive heartbeat received
+2026-10-21 08:39:58 [ERROR] database-pool: Rate limit threshold approaching 80%
+2026-10-21 08:21:40 [ERROR] worker-queue: Payload serialized: 1204 bytes
+2026-10-21 10:10:17 [ERROR] database-pool: Transaction committed
+2026-10-21 10:03:27 [DEBUG] auth-service: Cache miss for key user:session
+2026-10-21 10:04:24 [INFO] payment-gateway: Payload serialized: 1204 bytes
+2026-10-21 09:33:17 [DEBUG] database-pool: Token verified successfully
+2026-10-21 09:45:44 [ERROR] api-router: Slow query detected: 520ms
+2026-10-21 08:11:11 [WARN] cache-manager: Keep-alive heartbeat received
+2026-10-21 08:56:47 [ERROR] payment-gateway: Request processed in 42ms
+2026-10-21 08:18:07 [WARN] cache-manager: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:57:37 [DEBUG] payment-gateway: Rate limit threshold approaching 80%
+2026-10-21 08:03:12 [INFO] payment-gateway: Slow query detected: 520ms
+2026-10-21 09:59:27 [WARN] database-pool: Connection pool refreshed
+2026-10-21 10:06:54 [WARN] payment-gateway: Failed login attempt from IP 192.168.1.105
+2026-10-21 09:05:44 [ERROR] worker-queue: Transaction committed
+2026-10-21 09:50:45 [ERROR] payment-gateway: Cache miss for key user:session
+2026-10-21 08:07:20 [WARN] worker-queue: Token verified successfully
+2026-10-21 08:49:34 [INFO] api-router: Slow query detected: 520ms
+2026-10-21 09:55:05 [INFO] worker-queue: Token verified successfully
+2026-10-21 09:46:44 [INFO] api-router: Token verified successfully
+2026-10-21 09:57:33 [INFO] auth-service: Request processed in 42ms
+2026-10-21 08:35:58 [ERROR] auth-service: Keep-alive heartbeat received
+2026-10-21 08:51:36 [ERROR] worker-queue: Keep-alive heartbeat received
+2026-10-21 08:36:28 [INFO] payment-gateway: Keep-alive heartbeat received
+2026-10-21 09:53:15 [DEBUG] api-router: Transaction committed
+2026-10-21 08:28:28 [DEBUG] api-router: Request processed in 42ms
+2026-10-21 08:07:31 [ERROR] database-pool: Payload serialized: 1204 bytes
+2026-10-21 08:49:05 [INFO] api-router: Token verified successfully
+2026-10-21 09:32:03 [ERROR] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 08:29:10 [WARN] api-router: Keep-alive heartbeat received
+2026-10-21 09:11:15 [WARN] payment-gateway: Request processed in 42ms
+2026-10-21 10:03:09 [WARN] worker-queue: Connection pool refreshed
+2026-10-21 08:17:30 [WARN] database-pool: Keep-alive heartbeat received
+2026-10-21 08:10:17 [WARN] auth-service: Failed login attempt from IP 192.168.1.105
+2026-10-21 08:13:20 [INFO] auth-service: Keep-alive heartbeat received
+2026-10-21 08:38:25 [WARN] database-pool: Request processed in 42ms
+2026-10-21 09:49:54 [INFO] worker-queue: Rate limit threshold approaching 80%
+2026-10-21 08:43:21 [INFO] worker-queue: Cache miss for key user:session
