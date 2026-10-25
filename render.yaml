@@ -1,9 +1,9 @@
 services:
   - type: web
     name: mergeflow-sorter
-    env: static
-    buildCommand: ""
-    staticPublishPath: .
+    env: node
+    buildCommand: npm run build
+    startCommand: npm start
     routes:
       - type: rewrite
         source: /*
