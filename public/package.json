@@ -1,0 +1,21 @@
+{
+  "name": "mergeflow-sorter",
+  "version": "1.0.0",
+  "description": "G1 Mini-Project: Merge Sort & Recursion Tree Method - File/Log Sorter Tool",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node -e \"const fs=require('fs'); if(!fs.existsSync('public')) fs.mkdirSync('public'); ['index.html','sample_movies.csv','sample_server.log','sample_products.csv','pdf_example.txt','sample_large_logs.log','COLLEGE_MINI_PROJECT_REPORT.pdf','DEMO_AND_VIVA_GUIDE.pdf','FINAL_CHANGE_SUMMARY.pdf'].forEach(f=>{if(fs.existsSync(f))fs.copyFileSync(f,'public/'+f);}); console.log('Build complete - public directory populated');\"",
+    "test": "node test_suite.js"
+  },
+  "keywords": [
+    "merge-sort",
+    "recursion-tree",
+    "file-sorter",
+    "log-sorter",
+    "algorithms",
+    "data-structures"
+  ],
+  "author": "PixelNinja420",
+  "license": "MIT"
+}
